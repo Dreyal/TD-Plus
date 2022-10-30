@@ -1,0 +1,25 @@
+name        = "[342] TD Plus"
+source_dir  = "source"
+output_dir  = "output"
+description = [=[To enable Mods go to the titlescreen -> options -> mods -> manage mods -> search for "TD Plus" -> check the box -> click restart
+
+This mod adds some QoL changes for matchmaking lobbies
+- lowskill lobbies can be filtered out before searching
+- displays all current lobbies while searching
+- tier 7 players are able to find tier 5 average lobbies
+- search times are reduced drastically
+- displays hiveskills for each player
+- makes friend groups visible in lobbies
+- shows matchmaking playtime for player with this mod
+- added a small babbler shooting minigame
+- added a few emojis of the NS2 discord (not visible for non mod user)
+- /lobyytime informs you about the lobby lifespan left
+(lobbies shut down after 60 minutes)
+- /urban [word] command sends a message about the requested word via the urban directionary API
+
+
+Please share feedback and suggestions. They motivate me to continue working on this mod :)]=]
+image       = "preview.jpg"
+tag_modtype = "Look and Feel"
+tag_support = "Passes Default Consistency"
+publish_id = 2719296240
