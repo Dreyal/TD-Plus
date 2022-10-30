@@ -4,18 +4,15 @@ output_dir  = "output"
 description = [=[To enable Mods go to the titlescreen -> options -> mods -> manage mods -> search for "TD Plus" -> check the box -> click restart
 
 This mod adds some QoL changes for matchmaking lobbies
-- lowskill lobbies can be filtered out before searching
-- displays all current lobbies while searching
-- tier 7 players are able to find tier 5 average lobbies
-- search times are reduced drastically
 - displays hiveskills for each player
-- makes friend groups visible in lobbies
-- shows matchmaking playtime for player with this mod
-- added a small babbler shooting minigame
-- added a few emojis of the NS2 discord (not visible for non mod user)
-- /lobyytime informs you about the lobby lifespan left
-(lobbies shut down after 60 minutes)
-- /urban [word] command sends a message about the requested word via the urban directionary API
+- shows the hiveskill change since the last launch for each lobby member
+- adds a button to open the statsmenu for the last round played at the rightclick menu
+- adds a button to allow youtube links in the chat to be opened ingame
+- skip the lobbysearch with the console command "newlobby"
+- adds a small babbler shooting minigame
+- adds 30 emotes for the chat (not visible for non mod user)
+- displays the average hiveskill of both teams at the mapvote
+- displays the top 3 voted map in the planning menu
 
 
 Please share feedback and suggestions. They motivate me to continue working on this mod :)]=]
