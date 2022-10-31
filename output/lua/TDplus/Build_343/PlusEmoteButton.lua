@@ -134,7 +134,7 @@ function PlusEmoteButton:OnPressed()
         self.ClickMenu:SetVisible(true)
     end
 
-	self:FireEvent("setChatFocused")
+    self:FireEvent("setChatFocused")
 end
 
 

@@ -55,7 +55,7 @@ function GMTDChatWidget:Initialize(params, errorDepth)
 
       self:HookEvent(self.emotemenu, "hideEmotes", function() emotesEnabled = false end)
       self:HookEvent(self.emotemenu, "showEmotes", function() emotesEnabled = true end)
-	  self:HookEvent(self.emotemenu, "setChatFocused", function() self:SetChatWidgetFocused() end)
+      self:HookEvent(self.emotemenu, "setChatFocused", function() self:SetChatWidgetFocused() end)
 
 
       self.editLineEmote = CreateGUIObject("emoteIcon", GUIButton, self.chatInput)
@@ -68,14 +68,14 @@ function GMTDChatWidget:Initialize(params, errorDepth)
 
       -- 1 space means no emote TODO wird 1 überhaubt gefeuert????
       self:HookEvent(self.emotemenu, "1", function()
-		  self:SetChatWidgetFocused()
+          self:SetChatWidgetFocused()
           self.spaceAmount = 1
           self.editLineEmote:SetTexture(noEmote)
       end)
 
       for j = 2, 31 do
           self:HookEvent(self.emotemenu, tostring(j), function()
-		      self:SetChatWidgetFocused()
+              self:SetChatWidgetFocused()
               if self.spaceAmount == j then -- reset the emote
                 self.spaceAmount = 1
                 self.editLineEmote:SetTexture(noEmote)
@@ -133,5 +133,5 @@ function GMTDChatWidget:OnChatInputAccepted()
 end
 
 function GMTDChatWidget:SetChatWidgetFocused()
-	self.chatInput:SetEditing(true)
+    self.chatInput:SetEditing(true)
 end
