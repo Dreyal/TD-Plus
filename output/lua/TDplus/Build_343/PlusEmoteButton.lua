@@ -126,6 +126,7 @@ end
 
 function PlusEmoteButton:OnPressed()
     PlayMenuSound("BeginChoice")
+	
 
     if self.ClickMenu:GetVisible() then
         self.ClickMenu:SetVisible(false)
@@ -133,6 +134,7 @@ function PlusEmoteButton:OnPressed()
         self.ClickMenu:SetVisible(true)
     end
 
+    self:FireEvent("setChatFocused")
 end
 
 
