@@ -1,10 +1,10 @@
-name        = "[342] TD Plus"
+name        = "[343] TD Plus"
 source_dir  = "source"
 output_dir  = "output"
-description = [=[To enable Mods go to the titlescreen -> options -> mods -> manage mods -> search for "TD Plus" -> check the box -> click restart
+description = [=[To enable Mods go to the titlescreen -> options -> mods -> manage mods -> search for "[343] TD Plus" -> check the box -> click restart
 
 This mod adds some QoL changes for matchmaking lobbies
-- displays hiveskills for each player
+- displays hiveskill for all players
 - shows the hiveskill change since the last launch for each lobby member
 - adds a button to open the statsmenu for the last round played at the rightclick menu
 - adds a button to allow youtube links in the chat to be opened ingame
@@ -16,6 +16,9 @@ This mod adds some QoL changes for matchmaking lobbies
 
 
 Please share feedback and suggestions. They motivate me to continue working on this mod :)]=]
+
+If youre looking for others to play Matchmaking check out our Discord at https://discord.gg/Ttb4y5QE
+
 image       = "preview.jpg"
 tag_modtype = "Look and Feel"
 tag_support = "Passes Default Consistency"
