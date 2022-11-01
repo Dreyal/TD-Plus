@@ -44,75 +44,82 @@ function GMTDPlayerPlaqueContextMenu:Initialize(params, errorDepth)
 
     -----------------added new buttons here-----------------
     self:HookEvent(self, "OnSteamID64Changed", function()
-      local steamID64 = self:GetSteamID64()
-      if steamID64 == "" then return end
+        local steamID64 = self:GetSteamID64()
+        if steamID64 == "" then return end
 
-      local td = Thunderdome()
-      assert(td, "Error: No Thunderdome object found")
-      lobbyId = td:GetActiveLobbyId()
+            local td = Thunderdome()
+            assert(td, "Error: No Thunderdome object found")
+            lobbyId = td:GetActiveLobbyId()
 
-      local memberModel = td:GetMemberLocalData( lobbyId, steamID64 )
-      if memberModel then
+            local memberModel = td:GetMemberLocalData( lobbyId, steamID64 )
+            if memberModel then
 
 
-        -- fetch request takes a bit, it should update the values by itself once its receives the data
-        local function OtherParseHiveProfileResponse( response, errMsg, errCode )
-            if errCode == kHttpOpTimeoutErrorCode or errCode == kHttpOpRefusedErrorCode then
-            --Hive did not respond in a timely manner, check retry and attempt or fail-out
-                if kNumHiveProfileFetchAttempts <= kMaxHiveProfileAttemptsLimit then
-                    kNumHiveProfileFetchAttempts = kNumHiveProfileFetchAttempts + 1
-                    Log("Re-attempting[%s] Hive profile fetch...", kNumHiveProfileFetchAttempts)
-                    RequestHiveProfile()
+            -- fetch request takes a bit, it should update the values by itself once its receives the data
+            local function OtherParseHiveProfileResponse( response, errMsg, errCode )
+                if errCode == kHttpOpTimeoutErrorCode or errCode == kHttpOpRefusedErrorCode then
+                --Hive did not respond in a timely manner, check retry and attempt or fail-out
+                    if kNumHiveProfileFetchAttempts <= kMaxHiveProfileAttemptsLimit then
+                        kNumHiveProfileFetchAttempts = kNumHiveProfileFetchAttempts + 1
+                        Log("Re-attempting[%s] Hive profile fetch...", kNumHiveProfileFetchAttempts)
+                        RequestHiveProfile()
+                    end
+                    return
                 end
-                return
+
+                local obj, pos, err = json.decode(response, 1, nil)
+
+                if not obj then
+                    Log("Error: failed to retrieve Hive profile:\n%s\n%s\n%s", obj, pos, err)
+                    return false
+                end
+
+                if obj and err then
+                    return false
+                end
+
+                obj.level = obj.level or 0
+                obj.td_skill = obj.td_skill or 0
+                obj.td_skill_offset = obj.td_skill_offset or 0
+
+                --local  fetchedLevel = obj.level
+
+                local MarineSkillDiff = obj.td_skill + obj.td_skill_offset - tonumber(memberModel.marine_skill)
+                local AlienSkillDiff = obj.td_skill - obj.td_skill_offset - tonumber(memberModel.alien_skill)
+
+                local function diffstring(skilldiff)
+                    if skilldiff >= 1 then
+                        return " +" .. tostring(skilldiff)
+                    elseif skilldiff <= -1 then
+                        return " " .. tostring(skilldiff) -- it shows already "-"
+                    else
+                        return ""
+                    end
+                end
+                --Shared.Message(tostring(fetchedLevel))
+
+                self.marineskill:SetText("Marine: " .. tostring(memberModel.marine_skill) .. diffstring(MarineSkillDiff))
+                self.alienskill:SetText("Kharaa: " .. tostring(memberModel.alien_skill) .. diffstring(AlienSkillDiff))
             end
 
-            local obj, pos, err = json.decode(response, 1, nil)
-
-            if not obj then
-                Log("Error: failed to retrieve Hive profile:\n%s\n%s\n%s", obj, pos, err)
-                return false
+            local fieldhourdata = calcFieldhoursFromLifeforms(memberModel)
+            if not fieldhourdata then 
+                self.tdprogress:SetVisible(false)
+            else 
+                self.tdprogress:SetText("Playtime: " .. fieldhourdata .. "h")
+                self.tdprogress:SetVisible(true)
             end
 
-            if obj and err then
-                return false
-            end
 
-            obj.level = obj.level or 0
-            obj.td_skill = obj.td_skill or 0
-            obj.td_skill_offset = obj.td_skill_offset or 0
+            local steamId32 = Shared.ConvertSteamId64To32(steamID64)
+            local requestUrl = string.format("%s%s", "http://hive2.ns2cdt.com/api/players/", steamId32)
+            Shared.SendHTTPRequest(requestUrl, "GET", OtherParseHiveProfileResponse)
 
-            --local  fetchedLevel = obj.level
-
-            local MarineSkillDiff = obj.td_skill + obj.td_skill_offset - tonumber(memberModel.marine_skill)
-            local AlienSkillDiff = obj.td_skill - obj.td_skill_offset - tonumber(memberModel.alien_skill)
-
-            local function diffstring(skilldiff)
-                 if skilldiff >= 1 then
-                     return " +" .. tostring(skilldiff)
-                 elseif skilldiff <= -1 then
-                     return " " .. tostring(skilldiff) -- it shows already ""-""
-                 else
-                     return ""
-                 end
-            end
-            --Shared.Message(tostring(fetchedLevel))
-
-            self.marineskill:SetText("Marine: " .. tostring(memberModel.marine_skill) .. diffstring(MarineSkillDiff))
-            self.alienskill:SetText("Kharaa: " .. tostring(memberModel.alien_skill) .. diffstring(AlienSkillDiff))
-
+            self.marineskill:SetText("Marine: " .. tostring(memberModel.marine_skill))
+            self.alienskill:SetText("Kharaa: " .. tostring(memberModel.alien_skill))
+            self.marineskill:SetVisible(true)
+            self.alienskill:SetVisible(true)
         end
-
-
-          local steamId32 = Shared.ConvertSteamId64To32(steamID64)
-          local requestUrl = string.format("%s%s", "http://hive2.ns2cdt.com/api/players/", steamId32)
-          Shared.SendHTTPRequest(requestUrl, "GET", OtherParseHiveProfileResponse)
-
-           self.marineskill:SetText("Marine: " .. tostring(memberModel.marine_skill))
-           self.alienskill:SetText("Kharaa: " .. tostring(memberModel.alien_skill))
-           self.marineskill:SetVisible(true)
-           self.alienskill:SetVisible(true)
-      end
     end)
 
     self.marineskill = CreateGUIObject("marineskill", GUIMenuText, self.layout,
@@ -130,6 +137,14 @@ function GMTDPlayerPlaqueContextMenu:Initialize(params, errorDepth)
     self.alienskill:SetText("")
     self.alienskill:SetColor(Color(0.901, 0.623, 0.215, 1))
     self.alienskill:SetVisible(false)
+
+    self.tdprogress = CreateGUIObject("tdprogress", GUIMenuText, self.layout,
+    {
+        font = {family = "Agency", size = 40}
+    }  )
+    self.tdprogress:SetText("")
+    self.tdprogress:SetColor(Color(0.7, 0.7, 0.7, 1))
+    self.tdprogress:SetVisible(false)
 
 
     self.ns2panel = CreateGUIObject("ns2panel", GUIMenuSimpleTextButton, self.layout,
@@ -268,6 +283,7 @@ function GMTDPlayerPlaqueContextMenu:Initialize(params, errorDepth)
     self.layout:SetSpacing(5) -- was 10
     self.marineskill:SetFont({family = "Agency", size = textsize})
     self.alienskill:SetFont({family = "Agency", size = textsize})
+    self.tdprogress:SetFont({family = "Agency", size = textsize})
     self.ns2panel:SetFont({family = "Agency", size = textsize})
     self.gameendstats:SetFont({family = "Agency", size = textsize})
     self.youtube:SetFont({family = "Agency", size = textsize})
@@ -299,4 +315,34 @@ function GMTDPlayerPlaqueContextMenu:OnSteamID64Changed(newSteamID)
       local isSelf = newSteamID == GetLocalSteamID64()
       self.gameendstats:SetVisible(isSelf)
       self.youtube:SetVisible(isSelf)
+end
+
+
+function calcFieldhoursFromLifeforms(memberModel)
+
+    lifeformChoices = memberModel.lifeforms
+
+    if #lifeformChoices == 0 then 
+       return false
+    end
+
+    local hours = 0
+    for i = 1, #lifeformChoices do
+        if lifeformChoices[i] == "Skulk" then 
+            hours = hours + 1
+        elseif lifeformChoices[i] == "Gorge" then 
+            hours = hours + 5
+        elseif lifeformChoices[i] == "Lerk" then 
+            hours = hours + 25
+        elseif lifeformChoices[i] == "Fade" then 
+            hours = hours + 125
+        elseif lifeformChoices[i] == "Onos" then 
+            hours = hours + 625
+        end
+    end
+
+    if hours == 2500 then 
+        hours = 0
+    end
+    return hours
 end
