@@ -30,7 +30,7 @@ if Client then
 	-- local kInactivityDelay = 1000
 	ModLoader.SetupFileHook( "lua/GUI/GUIWebPageView.lua", "lua/TDplus/Build_343/GUIWebPageView.lua", "replace")
 
-	-- adds the calls for the hiveskill bar
+	-- adds the calls for the hiveskill bar and playtime progress
 	ModLoader.SetupFileHook( "lua/menu2/NavBar/Screens/Thunderdome/GUIMenuThunderdome.lua", "lua/TDplus/Build_343/GUIMenuThunderdome.lua", "post")
 
 	--add mapvote results to the planning window
