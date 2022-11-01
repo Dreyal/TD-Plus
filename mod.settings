@@ -5,6 +5,7 @@ description = [=[To enable Mods go to the titlescreen -> options -> mods -> mana
 
 This mod adds some QoL changes for matchmaking lobbies
 - displays hiveskill for all players
+- displays playtime progress of all mod users in the lobby
 - shows the hiveskill change since the last launch for each lobby member
 - adds a button to open the statsmenu for the last round played at the rightclick menu
 - adds a button to allow youtube links in the chat to be opened ingame
