@@ -1,5 +1,26 @@
 
 
+function setName(...)
+    local name = StringConcatArgs(...)
+    if name ~= nil then 
+         Thunderdome():SetPlayerName(tostring(name))
+    end
+end
+Event.Hook("Console_tdname", setName)
+
+
+function setComm()
+    Thunderdome():SetLocalCommandAble(1)
+end
+Event.Hook("Console_comm", setComm)
+
+function setNoComm()
+    Thunderdome():SetLocalCommandAble(0)
+end
+Event.Hook("Console_nocomm", setNoComm)
+
+
+
 function PlusOneDay()
     local steamID = Client.GetSteamId()
     if steamID == "" then return end
