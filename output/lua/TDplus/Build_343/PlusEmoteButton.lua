@@ -54,8 +54,8 @@ function PlusEmoteButton:Initialize(params, errorDepth)
 
 
 
-    local positionX = 5
-    local positionY = 5
+    local positionX = 3
+    local positionY = 3
     for i = 2, 31 do
 
         local emotemenuicon = CreateGUIObject("emoteIcon", GUIButton, self.ClickMenu)
@@ -64,7 +64,7 @@ function PlusEmoteButton:Initialize(params, errorDepth)
         emotemenuicon:SetTexture(emotemenufull)
         emotemenuicon:SetTexturePixelCoordinates(emotemenuiconDetails.texCoords)
         emotemenuicon:SetColor(1,1,1)
-        emotemenuicon:SetSize(56, 56)
+        emotemenuicon:SetSize(60, 60)
         emotemenuicon:SetPosition(positionX, positionY)
         emotemenuicon:SetVisible(true)
         emotemenuicon:SetLayer(1000)
@@ -97,7 +97,10 @@ function PlusEmoteButton:OnMouseRightClick()
     end
 end
 
-
+--[[
+    emote textures are 100x100 or 50x50 even though only 96x96 and 48x48 is used to give room for error for subpixel issues
+    emoteId gets the spacecounter of a message (2-31)
+]]
 function GetEmoteTextureDetails(emoteId)
     local result = {}
     local data = emotemenufull -- contains all emotes, prechached in chatwidget
@@ -112,8 +115,7 @@ function GetEmoteTextureDetails(emoteId)
     y1 = (row * emoteSize)
     x2 = x1 + emoteSize
     y2 = y1 + emoteSize
-    -- 2 pixel of transparency around each emote to prevent any subpixel issues
-    result.texCoords = { x1 + 2, y1 + 2, x2 - 2, y2 - 2 }
+    result.texCoords = { x1, y1, x2, y2}
     return result
 end
 

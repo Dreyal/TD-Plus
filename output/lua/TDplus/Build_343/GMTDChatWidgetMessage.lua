@@ -9,7 +9,7 @@ Script.Load("lua/menu2/widgets/Thunderdome/GMTDLoadingGraphic.lua")
 local kMessageTextFontFamily = "Arial"
 local kMessageTextFontSize = 22
 
---local kSenderPostFix = ": "
+
 local kMessageClipHeight = -1
 local kMessageMaxClipWidth = 9999 -- Theres no negative for width, sooo
 local commanderIconPadding = 10
@@ -23,12 +23,14 @@ function GMTDChatWidgetMessage:Initialize(params, errorDepth)
       oldGMTDChatWidgetMessageInitialize(self, params, errorDepth)
       self.emoteIcon = CreateGUIObject("emoteIcon", PlusGif, self)
       self.emoteIcon:SetVisible(false)
-      self.emoteIcon:SetTexture(noEmote)
+      --self.emoteIcon:SetTexture(noEmote)
 end
 
 
-
-function GMTDChatWidgetMessage:ShowEmote(message, isExtension, senderWidth, senderHeight, object,commanderPadding)
+--[[
+    emote position is still not quite right. It goes over text a line below if its by the same sender
+]]
+function GMTDChatWidgetMessage:ApplyEmotesForSpacecounters(message, isExtension, senderWidth, senderHeight, object,commanderPadding)
 
           local index = -1
           local spaceCounter = 0
@@ -82,7 +84,7 @@ function GMTDChatWidgetMessage:ShowEmote(message, isExtension, senderWidth, send
                 object:SetFloatParameter("verticalFrames",   1  )
                 object:SetFloatParameter("numFrames",        2   )
             else
-                local emotemenuiconDetails = GetEmoteTextureDetails(spaceCounter -2 )
+                local emotemenuiconDetails = GetEmoteTextureDetails(self.spaces -2 ) -- expects value between 0-29
                 object:SetTexture(emotemenufull)
                 object:SetTexturePixelCoordinates(emotemenuiconDetails.texCoords)
             end
@@ -111,7 +113,6 @@ function GMTDChatWidgetMessage:ShowEmote(message, isExtension, senderWidth, send
 
             object:SetSize(transOffset * 2 + senderHeight, transOffset * 2 + senderHeight)
             object:SetPosition(textLength - transOffset + commanderPadding*5, TopPadding - transOffset)
-            object:SetVisible(emotesEnabled)
             object:SetLayer(1000)
             end
       return message
@@ -119,6 +120,10 @@ end
 
 
 
+
+--[[
+    Changing the senderheight could be the cause of the subpixel issues with emotes and comm badges
+]]
 function GMTDChatWidgetMessage:UpdateTextFormatting()
     local isExtension = self:GetIsExtension()
     local fullMessage = self:GetSenderMessage()
@@ -161,8 +166,8 @@ function GMTDChatWidgetMessage:UpdateTextFormatting()
 
 
 
-    --new, deletes spaces and replaces them with an emote
-    fullMessage = self:ShowEmote(fullMessage, isExtension, senderWidth, self.senderText:GetSize().y, self.emoteIcon,commanderPadding)
+    --deletes spaces and replaces them with an emote
+    fullMessage = self:ApplyEmotesForSpacecounters(fullMessage, isExtension, senderWidth, self.senderText:GetSize().y, self.emoteIcon,commanderPadding)
     --
     if self.bigemote then
      senderHeight = 96

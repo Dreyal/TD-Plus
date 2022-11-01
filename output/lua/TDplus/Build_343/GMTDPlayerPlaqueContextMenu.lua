@@ -167,11 +167,11 @@ function GMTDPlayerPlaqueContextMenu:Initialize(params, errorDepth)
         end
     end)
 
-    self.youtube = CreateGUIObject("lastgame", GUIMenuSimpleTextButton, self.layout,
+    self.youtube = CreateGUIObject("youtube", GUIMenuSimpleTextButton, self.layout,
     {
         font = {family = "Agency", size = 40}
     }, errorDepth  )
-    self.youtube:SetLabel("Enable YouTube")
+    self.youtube:SetLabel("Disable YouTube")
     self:HookEvent(self.youtube, "OnPressed",
     function()
         if "Enable YouTube" == self.youtube:GetLabel() then
@@ -183,6 +183,9 @@ function GMTDPlayerPlaqueContextMenu:Initialize(params, errorDepth)
             self.youtube:SetLabel("Enable YouTube")
         end
     end)
+    function setDJtext(text)
+        self.youtube:SetLabel(text)
+    end
 ---------------------------------------------
     self.viewSteamProfileObj = CreateGUIObject("viewSteamProfile", GUIMenuSimpleTextButton, self.layout,
     {

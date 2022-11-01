@@ -4,6 +4,7 @@ function GUIMenuThunderdome:Initialize(params, errorDepth)
 
     oldGUIMenuThunderdomeInitialize(self, params, errorDepth)
 
+    Thunderdome_RemoveListener(kThunderdomeEvents.OnGUILeaveLobby,              self.TD_OnLobbyLeft)
     Thunderdome_RemoveListener(kThunderdomeEvents.OnGUIMapVoteStart,    self.TDMapVoteStarted)
 
     Thunderdome_RemoveListener(kThunderdomeEvents.OnGUILobbyMemberLeave,          self.TD_UpdateStatusBars)
@@ -29,7 +30,14 @@ function GUIMenuThunderdome:Initialize(params, errorDepth)
         hideBars()
     end
 
+    
+    oldTD_OnLobbyLeft = self.TD_OnLobbyLeft
+    self.TD_OnLobbyLeft = function( clientObject, lobbyId )
+        oldTD_OnLobbyLeft(self, clientObject, lobbyId)
+        disableYoutube()
+    end
 
+    Thunderdome_AddListener(kThunderdomeEvents.OnGUILeaveLobby,      self.TD_OnLobbyLeft)
     Thunderdome_AddListener(kThunderdomeEvents.OnGUIMapVoteStart,  self.TDMapVoteStarted)
 
     Thunderdome_AddListener(kThunderdomeEvents.OnGUILobbyJoined,                  self.TDLobbyJoined)

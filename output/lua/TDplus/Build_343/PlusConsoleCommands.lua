@@ -1,19 +1,5 @@
 
 
---[[
-TODO s:
-Save the youtube setting in a config file,
-Youtubebar is sometimes visible when it shouldnt be,
-LastRoundStats are not perfect aligned,
-add comm time when hovering over a player at LastRoundStats,
-Babbler has a weird pixel
-
-Ideas:
-Display the XP/level info
-Load the images from a webpage instead of saving them locally
-]]
-
-
 function PlusOneDay()
     local steamID = Client.GetSteamId()
     if steamID == "" then return end

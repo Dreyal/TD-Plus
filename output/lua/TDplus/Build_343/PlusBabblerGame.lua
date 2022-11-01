@@ -99,6 +99,8 @@ function PlusBabblerGame:OnPressed()
 
     self:SetPosition( x, y)
 
+
+    -- Babbler gets transparent the more you play, for fun
     if clickCount == 50 then
       self.icon:SetColor( Color(1,1,1,0.8) )
       self.iconActive:SetColor( Color(1,1,1,0.9) )

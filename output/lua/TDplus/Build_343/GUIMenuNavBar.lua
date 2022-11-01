@@ -2,8 +2,6 @@
 GUIMenuNavBar.kYoutubeSize = Vector(2000, 1500, 0)
 local kDefaultNewsFeedWebViewSize = Vector(750, 562, 0) -- 0.375 of the GUIMenuNavBar.kNewsFeedSize
 
-
-local youtubeOpenLink = "https://www.youtube.com/" -- we want the first link to be the last shared one
 GUIMenuNavBar.kYoutubeConfig =
 {
 
@@ -12,7 +10,7 @@ GUIMenuNavBar.kYoutubeConfig =
         label = string.upper("youtube"),
         webPageParams =
         {
-            url = youtubeOpenLink,
+            url = "https://www.youtube.com/",
             renderSize = kDefaultNewsFeedWebViewSize,
             wheelEnabled = true,
             clickMode = "Full",
@@ -36,7 +34,7 @@ function GUIMenuNavBar:Initialize(params, errorDepth)
     self.youtube:SetInheritsParentPosition(false)
     self.youtube:Collapse(true, true)
 
-    local  dj = false
+    local  dj = true
     -- context menu should set DJ true or false
     function setDJ(choice)
         dj = choice
@@ -44,20 +42,75 @@ function GUIMenuNavBar:Initialize(params, errorDepth)
             --self.youtube:Show(true)
             self.youtube:Collapse(false, false)
         else
-            self.youtube:Collapse(true, true)
-            self.youtube.webPageObjs["youtube"]:SetURL("https://www.youtube.com/")
-            self.youtube.webPageObjs["youtube"]:Set_WebViewShouldBeRendering(false)
+            disableYoutube()
         end
+    end
+
+    function disableYoutube()
+        self.youtube:Collapse(true, true)
+        self.youtube.webPageObjs["youtube"]:SetURL("https://www.youtube.com/")
+        self.youtube.webPageObjs["youtube"]:Set_WebViewShouldBeRendering(false)
     end
 
     self.youtube.pullout.label:SetText("")
     self.youtube.pullout.label2:SetText("")
 
-    function updateYoutubeLink(link)
-        youtubeOpenLink = link
-        if dj == true then
-         self.youtube.webPageObjs["youtube"]:SetURL(tostring(link))
-         self.youtube.webPageObjs["youtube"]:Set_WebViewShouldBeRendering(true)
+    function youtubePopup(link)
+
+        if dj == false then return end
+        local   message = "Do you want to open this Youtube link? :" ..  tostring(link)
+
+          local OnOk = function(popup)
+            --self.youtube:Show(true)
+            self.youtube:Collapse(false, false)
+            self.youtube.webPageObjs["youtube"]:SetURL(tostring(link))
+            self.youtube.webPageObjs["youtube"]:Set_WebViewShouldBeRendering(true)
+            popup:Close()
+          end
+
+          local OnCancel = function(popup)
+              popup:Close()
+          end
+
+          local OnStop = function(popup)
+                dj = false
+                setDJtext("Enable YouTube")
+            popup:Close()
         end
-    end
+
+
+          local popup = CreateGUIObject("popup", GUIMenuPopupSimpleMessage, nil,
+          {
+              title = "Youtube",
+              message = message,
+              escDisabled = true,
+              buttonConfig =
+              {
+                  {
+                      name = "ok",
+                      params =
+                      {
+                          label = string.upper("YES"),
+                      },
+                      callback = OnOk,
+                  },
+                  {
+                      name = "cancel",
+                      params =
+                      {
+                          label = string.upper("NO"),
+                      },
+                      callback = OnCancel,
+                  },
+                  {
+                    name = "stop",
+                    params =
+                    {
+                        label = string.upper("NEVER"),
+                    },
+                    callback = OnStop,
+                }
+              }
+          })
+      end
 end

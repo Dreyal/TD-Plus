@@ -12,7 +12,7 @@ if Client then
 	-- translates emojis to spaces
 	ModLoader.SetupFileHook( "lua/menu2/widgets/Thunderdome/GMTDChatWidget.lua", "lua/TDplus/Build_343/GMTDChatWidget.lua", "post")
 
-	-- dont randomise them
+	-- Sorts Mapvotes
 	ModLoader.SetupFileHook( "lua/menu2/NavBar/Screens/Thunderdome/GMTDMapVoteScreen.lua", "lua/TDplus/Build_343/GMTDMapVoteScreen.lua", "post")
 
 	-- added hiveskills and ns2panel to contextmenu. Reduces buttonsizes

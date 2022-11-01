@@ -2,9 +2,7 @@
 Script.Load("lua/TDplus/Build_343/PlusEmoteButton.lua")
 
 emotemenufull = PrecacheAsset("ui/emotemenufull.dds")
-noEmote = PrecacheAsset("ui/emptyonebyone.dds")
-emotesEnabled = true
-
+local noEmote = PrecacheAsset("ui/emptyonebyone.dds")
 
 oldGMTDChatWidgetAddNewChatMessage = GMTDChatWidget.AddNewChatMessage
 function GMTDChatWidget:AddNewChatMessage(lobbyId, senderName, senderTeam, message, senderSteamID64)
@@ -12,7 +10,7 @@ function GMTDChatWidget:AddNewChatMessage(lobbyId, senderName, senderTeam, messa
     local k = string.find(message, "/watch" )
     if k == 1 then
       -- send the link to menu navbar
-      updateYoutubeLink("https://www.youtube.com" .. message)
+      youtubePopup("https://www.youtube.com" .. message)
     end
 
   oldGMTDChatWidgetAddNewChatMessage(self, lobbyId, senderName, senderTeam, message, senderSteamID64)
@@ -24,6 +22,8 @@ function GMTDChatWidget:AddNewChatMessage(lobbyId, senderName, senderTeam, messa
     self:HookEvent(self.emotemenu, "showEmotes", function()
         self.chatMessages[chatIndex].emoteIcon:SetVisible(true)
     end)
+
+    self.chatMessages[chatIndex].emoteIcon:SetVisible(not self.emotemenu.iconRed:GetVisible())
 end
 
 oldGMTDChatWidgetClear = GMTDChatWidget.Clear
@@ -53,8 +53,6 @@ function GMTDChatWidget:Initialize(params, errorDepth)
       self.emotemenu:AlignBottomRight()
       self.emotemenu:SetLayer(2001)
 
-      self:HookEvent(self.emotemenu, "hideEmotes", function() emotesEnabled = false end)
-      self:HookEvent(self.emotemenu, "showEmotes", function() emotesEnabled = true end)
       self:HookEvent(self.emotemenu, "setChatFocused", function() self:SetChatWidgetFocused() end)
 
 
@@ -66,12 +64,6 @@ function GMTDChatWidget:Initialize(params, errorDepth)
       self.editLineEmote:SetVisible(true)
       self.editLineEmote:SetLayer(1000)
 
-      -- 1 space means no emote TODO wird 1 überhaubt gefeuert????
-      self:HookEvent(self.emotemenu, "1", function()
-          self:SetChatWidgetFocused()
-          self.spaceAmount = 1
-          self.editLineEmote:SetTexture(noEmote)
-      end)
 
       for j = 2, 31 do
           self:HookEvent(self.emotemenu, tostring(j), function()

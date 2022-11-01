@@ -3,6 +3,7 @@
 --
 --
 -- Ported by: Darrell Gentry (darrell@naturalselection2.com)
+-- Ported again for TD plus
 --
 -- Port of the NS2+ end of round stats. It displays an amalgam of stats at the end of a round.
 -- Originally Created By: Juanjo Alfaro "Mendasp"
@@ -1539,6 +1540,7 @@ function PlusGUIGameEndStats:Initialize(guiElement)
 	pcall(self.LoadLastRoundStats, self)
 
 	self.tooltip = GetGUIManager():CreateGUIScriptSingle("menu/GUIHoverTooltip")
+	self.tooltip.background:SetLayer(kGUILayerOptionsTooltips + 1000)
 	self.hoverMenu = GetGUIManager():CreateGUIScript("GUIHoverMenu")
 	self.hoverMenu.background:SetLayer(kGUILayerMainMenu + 1000) -- new
 	self.hoverMenu:Hide()
@@ -2588,14 +2590,7 @@ function PlusGUIGameEndStats:GetShouldUpdate()
 end
 
 function PlusGUIGameEndStats:SendCharacterEvent(character)
-		return false--[[
-    for _, script in ipairs(self.scripts:GetList()) do
-
-        if script:SendCharacterEvent(character) then
-            return true
-        end
-    end
-	]]
+		return false
 end
 
 

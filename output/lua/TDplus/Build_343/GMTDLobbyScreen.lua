@@ -33,8 +33,8 @@ function GMTDLobbyScreen:Initialize(params, errorDepth)
       self.bars:calcTeamskillgraph()
     end
 
+    --uses the LobbyClientOwner:CollectMapVotes() as base
     self.printmapvotes = function()
-
         Shared.Message("maps:")
         local memberModel = Thunderdome():GetMemberListLocalData(Thunderdome():GetActiveLobbyId())
         if not memberModel then return end
