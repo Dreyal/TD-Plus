@@ -121,7 +121,7 @@ function GUIMenuThunderdome:UpdateStatusBars( lobbyId )
     if LeaveBeforeTen then 
         local members = Thunderdome():GetMemberListLocalData( lobbyId )
         if not members then return end
-        if #members > 0 then 
+        if #members > 9 then 
             local td = Thunderdome()
             td:LeaveLobby(td:GetActiveLobbyId(), true)
             Shared.Message("Left lobby due to autoleave at 10 players")
