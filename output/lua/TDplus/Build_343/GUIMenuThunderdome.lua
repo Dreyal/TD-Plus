@@ -1,5 +1,5 @@
 
-oldGUIMenuThunderdomeInitialize = GUIMenuThunderdome.Initialize
+local oldGUIMenuThunderdomeInitialize = GUIMenuThunderdome.Initialize
 function GUIMenuThunderdome:Initialize(params, errorDepth)
 
     oldGUIMenuThunderdomeInitialize(self, params, errorDepth)
@@ -11,33 +11,49 @@ function GUIMenuThunderdome:Initialize(params, errorDepth)
     Thunderdome_RemoveListener(kThunderdomeEvents.OnGUILobbyMemberKicked,         self.TD_UpdateStatusBars)
     Thunderdome_RemoveListener(kThunderdomeEvents.OnGUILobbyJoined,                  self.TDLobbyJoined)
 
+    Thunderdome_RemoveListener(kThunderdomeEvents.OnGUIMaxLobbyLifespanNotice,  self.TD_MaxLobbyLifespanPrompt)
 
-    oldTDMapVoteStarted = self.TDMapVoteStarted
+    local oldTDMapVoteStarted = self.TDMapVoteStarted
     self.TDMapVoteStarted = function( clientObject, lobbyId )
         oldTDMapVoteStarted(self, clientObject, lobbyId)
         showBars()
         deleteHoursInLifeforms()
     end
 
-    oldTD_UpdateStatusBars = self.TD_UpdateStatusBars
+    local oldTD_UpdateStatusBars = self.TD_UpdateStatusBars
     self.TD_UpdateStatusBars = function( clientObject, memberId, lobbyId )
         oldTD_UpdateStatusBars(self, clientObject, memberId, lobbyId)
         hideBars()
     end
 
-    oldTDLobbyJoined = self.TDLobbyJoined
+    local oldTDLobbyJoined = self.TDLobbyJoined
     self.TDLobbyJoined = function( clientObject, lobbyId )
         oldTDLobbyJoined(self, clientObject, lobbyId)
         writeHoursInLifeforms()
         hideBars()
+        self:RemoveTimedCallback(searchAfterAfkCallback)
+        self.searchAfterAfkCallback = nil
+    end
+
+    local oldTD_MaxLobbyLifespanPrompt = self.TD_MaxLobbyLifespanPrompt
+    self.TD_MaxLobbyLifespanPrompt = function(clientModeObject)
+        oldTD_MaxLobbyLifespanPrompt(self, clientModeObject)
+        -- delayed callback for starting a lobbysearch
+        if not self.searchAfterAfkCallback and SearchAfterAfkLobby then 
+            ran = math.random(10,20)
+            Shared.Message(string.format("auto searches in %d seconds", ran))
+            self.searchAfterAfkCallback = self:AddTimedCallback(self.ShowSearchScreen, ran)
+        end
     end
 
     
-    oldTD_OnLobbyLeft = self.TD_OnLobbyLeft
+    local oldTD_OnLobbyLeft = self.TD_OnLobbyLeft
     self.TD_OnLobbyLeft = function( clientObject, lobbyId )
         oldTD_OnLobbyLeft(self, clientObject, lobbyId)
         disableYoutube()
     end
+
+    Thunderdome_AddListener(kThunderdomeEvents.OnGUIMaxLobbyLifespanNotice,  self.TD_MaxLobbyLifespanPrompt)
 
     Thunderdome_AddListener(kThunderdomeEvents.OnGUILeaveLobby,      self.TD_OnLobbyLeft)
     Thunderdome_AddListener(kThunderdomeEvents.OnGUIMapVoteStart,  self.TDMapVoteStarted)
@@ -46,6 +62,9 @@ function GUIMenuThunderdome:Initialize(params, errorDepth)
     Thunderdome_AddListener(kThunderdomeEvents.OnGUILobbyMemberLeave,          self.TD_UpdateStatusBars)
     Thunderdome_AddListener(kThunderdomeEvents.OnGUILobbyMemberKicked,         self.TD_UpdateStatusBars)
   end
+
+
+
 
 -- yes this is hacky. We dont have many ways to share data with other modded clients
 function writeHoursInLifeforms()
@@ -93,4 +112,22 @@ end
 function deleteHoursInLifeforms()
     local lifeformChoices = {}
     Thunderdome():SetLocalLifeformsChoices(lifeformChoices)
+end
+
+local oldGUIMenuThunderdomeUpdateStatusBars = GUIMenuThunderdome.UpdateStatusBars
+function GUIMenuThunderdome:UpdateStatusBars( lobbyId )
+    oldGUIMenuThunderdomeUpdateStatusBars(self, lobbyId)
+
+    if LeaveBeforeTen then 
+        local members = Thunderdome():GetMemberListLocalData( lobbyId )
+        if not members then return end
+        if #members > 0 then 
+            local td = Thunderdome()
+            td:LeaveLobby(td:GetActiveLobbyId(), true)
+            Shared.Message("Left lobby due to autoleave at 10 players")
+            LeaveBeforeTen = false
+            Shared.Message("Autoleave at 10 Player: " .. tostring(LeaveBeforeTen))
+        end
+    end
+    
 end

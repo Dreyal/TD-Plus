@@ -1,5 +1,49 @@
 
 
+
+function printHelp(...)
+    Shared.Message("---- TD Plus Console Command List ----")
+    Shared.Message("newlobby")
+    Shared.Message("lastdiff")
+    Shared.Message("comm")
+    Shared.Message("nocomm")
+    Shared.Message("tdname [name]")
+    Shared.Message("dj [youtube link]")
+    Shared.Message("c [chat message]")
+    Shared.Message("serverbrowser")
+    Shared.Message("autosearch")
+    Shared.Message("autoleave")
+end
+Event.Hook("help", printHelp)
+
+
+LeaveBeforeTen = false -- see oldGUIMenuThunderdomeUpdateStatusBars
+function autoLeave()
+    if LeaveBeforeTen then 
+        LeaveBeforeTen = false 
+        Shared.Message("Autoleave at 10 Player: " .. tostring(LeaveBeforeTen))
+    else 
+        LeaveBeforeTen = true 
+        Shared.Message("Enabled autoleave when your lobby reaches 10 player")
+    end
+end
+Event.Hook("Console_autoleave", autoLeave)
+
+
+SearchAfterAfkLobby = false -- see oldTD_MaxLobbyLifespanPrompt
+function autoSearch()
+    if SearchAfterAfkLobby then 
+        SearchAfterAfkLobby = false 
+        Shared.Message("Autosearch: " .. tostring(SearchAfterAfkLobby))
+    else 
+        SearchAfterAfkLobby = true 
+        Shared.Message("Enabled autosearch after an afk lobby kick")
+    end
+end
+Event.Hook("Console_autosearch", autoSearch)
+
+
+
 function setName(...)
     local name = StringConcatArgs(...)
     if name ~= nil then 
