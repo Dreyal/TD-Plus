@@ -1,7 +1,7 @@
 
 
 
-oldGMTDPlanningScreenInitialize = GMTDPlanningScreen.Initialize
+local oldGMTDPlanningScreenInitialize = GMTDPlanningScreen.Initialize
 function GMTDPlanningScreen:Initialize(params, errorDepth)
     oldGMTDPlanningScreenInitialize(self, params, errorDepth)
 

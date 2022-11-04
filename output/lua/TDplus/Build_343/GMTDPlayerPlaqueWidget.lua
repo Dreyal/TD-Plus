@@ -2,7 +2,7 @@
 local kRightSidePadding = 10
 
 
-oldGMTDPlayerPlaqueWidgetInitialize = GMTDPlayerPlaqueWidget.Initialize
+local oldGMTDPlayerPlaqueWidgetInitialize = GMTDPlayerPlaqueWidget.Initialize
 function GMTDPlayerPlaqueWidget:Initialize(params, errorDepth)
 
     oldGMTDPlayerPlaqueWidgetInitialize(self, params, errorDepth)
@@ -25,7 +25,7 @@ function GMTDPlayerPlaqueWidget:GetHiveSkill()
 end
 
 
-oldGMTDPlayerPlaqueWidgetOnSizeChanged = GMTDPlayerPlaqueWidget.OnSizeChanged
+local oldGMTDPlayerPlaqueWidgetOnSizeChanged = GMTDPlayerPlaqueWidget.OnSizeChanged
 function GMTDPlayerPlaqueWidget:OnSizeChanged(newSize)
     oldGMTDPlayerPlaqueWidgetOnSizeChanged(self, newSize)
     local halfHeight = newSize.y / 2
@@ -40,7 +40,7 @@ end
 
 
 
-oldGMTDPlayerPlaqueWidgetUpdatePlayerDataElements = GMTDPlayerPlaqueWidget.UpdatePlayerDataElements
+local oldGMTDPlayerPlaqueWidgetUpdatePlayerDataElements = GMTDPlayerPlaqueWidget.UpdatePlayerDataElements
 function GMTDPlayerPlaqueWidget:UpdatePlayerDataElements( lobbyId )
     oldGMTDPlayerPlaqueWidgetUpdatePlayerDataElements(self, lobbyId)
 
@@ -77,7 +77,7 @@ function GMTDPlayerPlaqueWidget:UpdatePlayerDataElements( lobbyId )
 
 end
 
-oldGMTDPlayerPlaqueWidgetSetChildrenVisible = GMTDPlayerPlaqueWidget.SetChildrenVisible
+local oldGMTDPlayerPlaqueWidgetSetChildrenVisible = GMTDPlayerPlaqueWidget.SetChildrenVisible
 function GMTDPlayerPlaqueWidget:SetChildrenVisible(newVisible)
 
     oldGMTDPlayerPlaqueWidgetSetChildrenVisible(self, newVisible)
@@ -86,7 +86,7 @@ function GMTDPlayerPlaqueWidget:SetChildrenVisible(newVisible)
     end
 end
 
-oldGMTDPlayerPlaqueWidgetOnSteamID64Changed = GMTDPlayerPlaqueWidget.OnSteamID64Changed
+local oldGMTDPlayerPlaqueWidgetOnSteamID64Changed = GMTDPlayerPlaqueWidget.OnSteamID64Changed
 function GMTDPlayerPlaqueWidget:OnSteamID64Changed()
 
     oldGMTDPlayerPlaqueWidgetOnSteamID64Changed(self)

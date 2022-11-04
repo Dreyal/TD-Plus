@@ -309,7 +309,7 @@ end
 
 
 
-oldGMTDPlayerPlaqueContextMenuOnSteamID64Changed = GMTDPlayerPlaqueContextMenu.OnSteamID64Changed
+local oldGMTDPlayerPlaqueContextMenuOnSteamID64Changed = GMTDPlayerPlaqueContextMenu.OnSteamID64Changed
 function GMTDPlayerPlaqueContextMenu:OnSteamID64Changed(newSteamID)
       oldGMTDPlayerPlaqueContextMenuOnSteamID64Changed(self, newSteamID)
       local isSelf = newSteamID == GetLocalSteamID64()

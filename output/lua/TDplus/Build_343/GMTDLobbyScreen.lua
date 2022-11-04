@@ -3,7 +3,7 @@
 Script.Load("lua/TDplus/Build_343/PlusBabblerGame.lua")
 Script.Load("lua/TDplus/Build_343/PlusHiveskillBars.lua")
 
-oldGMTDLobbyScreenInitialize = GMTDLobbyScreen.Initialize
+local oldGMTDLobbyScreenInitialize = GMTDLobbyScreen.Initialize
 function GMTDLobbyScreen:Initialize(params, errorDepth)
 
       oldGMTDLobbyScreenInitialize(self, params, errorDepth)
@@ -33,9 +33,15 @@ function GMTDLobbyScreen:Initialize(params, errorDepth)
       self.bars:calcTeamskillgraph()
     end
 
-    --uses the LobbyClientOwner:CollectMapVotes() as base
     self.printmapvotes = function()
-        Shared.Message("maps:")
+        self:calcMapvotes()
+    end
+end
+
+
+--uses the LobbyClientOwner:CollectMapVotes() as base
+function GMTDLobbyScreen:calcMapvotes()
+    Shared.Message("maps:")
         local memberModel = Thunderdome():GetMemberListLocalData(Thunderdome():GetActiveLobbyId())
         if not memberModel then return end
 
@@ -114,18 +120,18 @@ function GMTDLobbyScreen:Initialize(params, errorDepth)
         if totalvotes == 0 then totalvotes = 1 end
 
         setMapvoteText(mapVotes[1].map,mapVotes[1].count,mapVotes[2].map,mapVotes[2].count,mapVotes[3].map,mapVotes[3].count,totalvotes)
-    end
 end
 
 
-oldGMTDLobbyScreenOnShowRightClickMenu = GMTDLobbyScreen.OnShowRightClickMenu
+
+local oldGMTDLobbyScreenOnShowRightClickMenu = GMTDLobbyScreen.OnShowRightClickMenu
 function GMTDLobbyScreen:OnShowRightClickMenu(plaque)
     self.target:FireEvent("SetPassive")
     oldGMTDLobbyScreenOnShowRightClickMenu(self, plaque)
 end
 
 
-oldGMTDLobbyScreenInitializeLobbyGUI = GMTDLobbyScreen.InitializeLobbyGUI
+local oldGMTDLobbyScreenInitializeLobbyGUI = GMTDLobbyScreen.InitializeLobbyGUI
 function GMTDLobbyScreen:InitializeLobbyGUI( lobbyId )
     oldGMTDLobbyScreenInitializeLobbyGUI(self, lobbyId)
 
@@ -140,14 +146,14 @@ end
 
 
 
-oldGMTDLobbyScreenRegisterEvents = GMTDLobbyScreen.RegisterEvents
+local oldGMTDLobbyScreenRegisterEvents = GMTDLobbyScreen.RegisterEvents
 function GMTDLobbyScreen:RegisterEvents()
       oldGMTDLobbyScreenRegisterEvents(self)
       Thunderdome_AddListener(kThunderdomeEvents.OnGUIMapVoteComplete, self.printmapvotes)
 end
 
 
-oldGMTDLobbyScreenUnregisterEvents = GMTDLobbyScreen.UnregisterEvents
+local oldGMTDLobbyScreenUnregisterEvents = GMTDLobbyScreen.UnregisterEvents
 function GMTDLobbyScreen:UnregisterEvents()
       oldGMTDLobbyScreenUnregisterEvents(self)
       Thunderdome_RemoveListener(kThunderdomeEvents.OnGUIMapVoteComplete, self.printmapvotes)

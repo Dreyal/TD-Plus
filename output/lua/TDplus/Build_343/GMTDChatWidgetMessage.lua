@@ -17,13 +17,12 @@ local commanderIconPadding = 10
 local kPadding = 15
 
 
-oldGMTDChatWidgetMessageInitialize = GMTDChatWidgetMessage.Initialize
+local oldGMTDChatWidgetMessageInitialize = GMTDChatWidgetMessage.Initialize
 
 function GMTDChatWidgetMessage:Initialize(params, errorDepth)
       oldGMTDChatWidgetMessageInitialize(self, params, errorDepth)
       self.emoteIcon = CreateGUIObject("emoteIcon", PlusGif, self)
       self.emoteIcon:SetVisible(false)
-      --self.emoteIcon:SetTexture(noEmote)
 end
 
 

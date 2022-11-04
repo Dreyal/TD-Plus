@@ -19,7 +19,7 @@ GUIMenuNavBar.kYoutubeConfig =
 }
 
 
-oldGUIMenuNavBarInitialize = GUIMenuNavBar.Initialize
+local oldGUIMenuNavBarInitialize = GUIMenuNavBar.Initialize
 function GUIMenuNavBar:Initialize(params, errorDepth)
     oldGUIMenuNavBarInitialize(self, params, errorDepth)
 
@@ -58,7 +58,7 @@ function GUIMenuNavBar:Initialize(params, errorDepth)
     function youtubePopup(link)
 
         if dj == false then return end
-        local   message = "Do you want to open this Youtube link? :" ..  tostring(link)
+        local   message = "Do you want to open this Youtube link? : " ..  tostring(link)
 
           local OnOk = function(popup)
             --self.youtube:Show(true)
@@ -106,7 +106,7 @@ function GUIMenuNavBar:Initialize(params, errorDepth)
                     name = "stop",
                     params =
                     {
-                        label = string.upper("NEVER"),
+                        label = string.upper("BLOCK ALL"),
                     },
                     callback = OnStop,
                 }

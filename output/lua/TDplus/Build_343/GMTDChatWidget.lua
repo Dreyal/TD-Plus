@@ -4,7 +4,7 @@ Script.Load("lua/TDplus/Build_343/PlusEmoteButton.lua")
 emotemenufull = PrecacheAsset("ui/emotemenufull.dds")
 local noEmote = PrecacheAsset("ui/emptyonebyone.dds")
 
-oldGMTDChatWidgetAddNewChatMessage = GMTDChatWidget.AddNewChatMessage
+local oldGMTDChatWidgetAddNewChatMessage = GMTDChatWidget.AddNewChatMessage
 function GMTDChatWidget:AddNewChatMessage(lobbyId, senderName, senderTeam, message, senderSteamID64)
 
     local k = string.find(message, "/watch" )
@@ -13,8 +13,8 @@ function GMTDChatWidget:AddNewChatMessage(lobbyId, senderName, senderTeam, messa
       youtubePopup("https://www.youtube.com" .. message)
     end
 
-  oldGMTDChatWidgetAddNewChatMessage(self, lobbyId, senderName, senderTeam, message, senderSteamID64)
-
+    oldGMTDChatWidgetAddNewChatMessage(self, lobbyId, senderName, senderTeam, message, senderSteamID64)
+    
     local chatIndex = #self.chatMessages
     self:HookEvent(self.emotemenu, "hideEmotes", function()
       self.chatMessages[chatIndex].emoteIcon:SetVisible(false)
@@ -26,7 +26,7 @@ function GMTDChatWidget:AddNewChatMessage(lobbyId, senderName, senderTeam, messa
     self.chatMessages[chatIndex].emoteIcon:SetVisible(not self.emotemenu.iconRed:GetVisible())
 end
 
-oldGMTDChatWidgetClear = GMTDChatWidget.Clear
+local oldGMTDChatWidgetClear = GMTDChatWidget.Clear
 function GMTDChatWidget:Clear()
     self:UnHookEventsByName("hideEmotes")
     self:UnHookEventsByName("showEmotes")
@@ -35,7 +35,7 @@ end
 
 
 
-oldGMTDChatWidgetInitialize = GMTDChatWidget.Initialize
+local oldGMTDChatWidgetInitialize = GMTDChatWidget.Initialize
 function GMTDChatWidget:Initialize(params, errorDepth)
 
       --emote would overlap with the message
