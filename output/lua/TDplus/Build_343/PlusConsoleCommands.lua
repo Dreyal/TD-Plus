@@ -1,6 +1,5 @@
 
 
-
 function printHelp(...)
     Shared.Message("---- TD Plus Console Command List ----")
     Shared.Message("newlobby")
@@ -11,36 +10,22 @@ function printHelp(...)
     Shared.Message("dj [youtube link]")
     Shared.Message("c [chat message]")
     Shared.Message("serverbrowser")
-    Shared.Message("autosearch")
-    Shared.Message("autoleave")
+    Shared.Message("seeding")
 end
 Event.Hook("help", printHelp)
 
 
-LeaveBeforeTen = false -- see oldGUIMenuThunderdomeUpdateStatusBars
-function autoLeave()
-    if LeaveBeforeTen then 
-        LeaveBeforeTen = false 
-        Shared.Message("Autoleave at 10 Player: " .. tostring(LeaveBeforeTen))
+TDseedingMode = false -- see oldTD_MaxLobbyLifespanPrompt and oldGUIMenuThunderdomeUpdateStatusBars
+function seedMode()
+    if TDseedingMode then 
+        TDseedingMode = false 
+        Shared.Message("Seeding Mode: " .. tostring(TDseedingMode))
     else 
-        LeaveBeforeTen = true 
-        Shared.Message("Enabled autoleave when your lobby reaches 10 player")
+        TDseedingMode = true 
+        Shared.Message("Enabled TD seeding mode. You will auto rejoin after a lobby afk kick and auto leave at 10 player")
     end
 end
-Event.Hook("Console_autoleave", autoLeave)
-
-
-SearchAfterAfkLobby = false -- see oldTD_MaxLobbyLifespanPrompt
-function autoSearch()
-    if SearchAfterAfkLobby then 
-        SearchAfterAfkLobby = false 
-        Shared.Message("Autosearch: " .. tostring(SearchAfterAfkLobby))
-    else 
-        SearchAfterAfkLobby = true 
-        Shared.Message("Enabled autosearch after an afk lobby kick")
-    end
-end
-Event.Hook("Console_autosearch", autoSearch)
+Event.Hook("Console_seeding", seedMode)
 
 
 
