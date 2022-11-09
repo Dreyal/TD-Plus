@@ -56,20 +56,21 @@ function GMTDChatWidgetMessage:ApplyEmotesForSpacecounters(message, isExtension,
 
             local transOffset = 0
 
-            if self.spaces == 4 then -- veil 4ms
+
+            if self.spaces == 4 then -- veil 
                 object:SetTexture("ui/veildance.dds")
-                object:SetFloatParameter("framesPerSecond",  50 )
+                object:SetFloatParameter("framesPerSecond",  40 )
                 object:SetFloatParameter("horizontalFrames", 5)
                 object:SetFloatParameter("verticalFrames",   5  )
                 object:SetFloatParameter("numFrames",        25   )
-            elseif self.spaces == 5 then -- blob 2ms
+            elseif self.spaces == 5 then -- blob 
                 object:SetTexture("ui/blobdance2.dds")
-                object:SetFloatParameter("framesPerSecond",  50 )
+                object:SetFloatParameter("framesPerSecond",  48 )
                 object:SetFloatParameter("horizontalFrames", 5)
                 object:SetFloatParameter("verticalFrames",   8  )
                 object:SetFloatParameter("numFrames",        37   )
                 transOffset = 1
-            elseif self.spaces == 6 then -- rat 3ms
+            elseif self.spaces == 6 then -- rat 
                 object:SetTexture("ui/ratdance2.dds")
                 object:SetFloatParameter("framesPerSecond",  35 )
                 object:SetFloatParameter("horizontalFrames", 5)
@@ -78,7 +79,7 @@ function GMTDChatWidgetMessage:ApplyEmotesForSpacecounters(message, isExtension,
                 transOffset = 1
             elseif self.spaces == 30 then -- cat
                 object:SetTexture("ui/bongocat.dds")
-                object:SetFloatParameter("framesPerSecond",  15 )
+                object:SetFloatParameter("framesPerSecond",  14 )
                 object:SetFloatParameter("horizontalFrames", 5)
                 object:SetFloatParameter("verticalFrames",   1  )
                 object:SetFloatParameter("numFrames",        2   )
