@@ -173,6 +173,7 @@ function GUIMenuThunderdome:UpdateStatusBars( lobbyId )
     end
 end
 
+-- TODO call it when becoming the new lobby owner
 -- called everytime someone leaves or joins except when youre leaving yourself
 function GUIMenuThunderdome:updateApathy()
     if Thunderdome():GetLocalClientIsOwner() then 

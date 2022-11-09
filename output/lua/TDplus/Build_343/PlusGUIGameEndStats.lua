@@ -1959,7 +1959,6 @@ function PlusGUIGameEndStats:UpdateVisibleUI()
 	self:UpdateCloseButton()
 end
 
--- Todo: Split this monster into submethods
 function PlusGUIGameEndStats:ProcessStats()
 	table.sort(finalStatsTable, function(a, b)
 		a.teamNumber = a.isMarine and 1 or 2
@@ -2202,8 +2201,6 @@ function PlusGUIGameEndStats:ProcessStats()
 		table.insert(self.team2UI.playerRows, CreateScoreboardRow(self.team2UI.tableBackground, kAverageRowColor, kAverageRowTextColor, "Average", printNum(totalKills2/numPlayers2), printNum(totalAssists2/numPlayers2), printNum(totalDeaths2/numPlayers2), string.format("%s%%", printNum(avgAccuracy2)), printNum2(team2Score/numPlayers2), printNum2(totalPdmg2/numPlayers2), printNum2(totalSdmg2/numPlayers2), string.format("%d:%02d", minutes2Avg, seconds2Avg), string.format("%d:%02d", minutes2PAvg, seconds2PAvg)))
 	end
 
-	--local gameInfo = GetGameInfoEntity()
-	--local teamStatsVisible = gameInfo.showEndStatsTeamBreakdown --TODO I REMOVED IT
 local teamStatsVisible = true
 	self.team1UI.background:SetIsVisible(teamStatsVisible)
 	self.team2UI.background:SetIsVisible(teamStatsVisible)
@@ -2558,8 +2555,6 @@ local teamStatsVisible = true
 	end
 
 	self:RepositionStats()
-
-	--pcall(self.SaveLastRoundStats, self) TODO REMOVED BY ME
 end
 
 local loadedthestats = false
@@ -2634,7 +2629,6 @@ function PlusGUIGameEndStats:SendKeyEvent(key, down)
 				self.hoverMenu:SetBackgroundColor(bgColor)
 				local name = self.lastRow.playerName:GetText()
 
-				-- Todo: Add skill tier icon
 				if self.lastRow.hiveSkillTier then
 					name = string.format("[%s] %s", self.lastRow.hiveSkillTier, name)
 				end
