@@ -15,6 +15,8 @@ end
 Event.Hook("help", printHelp)
 
 
+-- needs some kind of GUI to show its active
+-- TODO prevent joining lobbies at 11 player
 TDseedingMode = false -- see oldTD_MaxLobbyLifespanPrompt and oldGUIMenuThunderdomeUpdateStatusBars
 function seedMode()
     if TDseedingMode then 
@@ -86,12 +88,18 @@ Event.Hook("Console_c", PlusCreateChat)
 function PlusYoutubeChat(...)
       local link = StringConcatArgs(...)
 
+
+      local j = string.find(link, "youtu.be/")
+      if j then 
+        link = string.sub(link,j)
+        Thunderdome():SendChatMessage(link,Thunderdome():GetActiveLobbyId())
+      end
+      
+
       local i = string.find(link, "/watch")
       if i then
         link = string.sub(link,i)
         Thunderdome():SendChatMessage(link,Thunderdome():GetActiveLobbyId())
-      else
-          Shared.Message("couldnt read link")
       end
 
 end

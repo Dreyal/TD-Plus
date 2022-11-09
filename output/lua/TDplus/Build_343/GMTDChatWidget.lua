@@ -13,6 +13,11 @@ function GMTDChatWidget:AddNewChatMessage(lobbyId, senderName, senderTeam, messa
       youtubePopup("https://www.youtube.com" .. message)
     end
 
+    local j = string.find(message, "youtu.be/")
+    if j == 1 then  
+        youtubePopup(message)
+    end
+
     oldGMTDChatWidgetAddNewChatMessage(self, lobbyId, senderName, senderTeam, message, senderSteamID64)
     
     local chatIndex = #self.chatMessages
@@ -34,7 +39,7 @@ function GMTDChatWidget:Clear()
 end
 
 
-
+--TODO add copy paste
 local oldGMTDChatWidgetInitialize = GMTDChatWidget.Initialize
 function GMTDChatWidget:Initialize(params, errorDepth)
 
