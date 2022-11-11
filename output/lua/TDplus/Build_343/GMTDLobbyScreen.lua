@@ -2,6 +2,8 @@
 
 Script.Load("lua/TDplus/Build_343/PlusBabblerGame.lua")
 Script.Load("lua/TDplus/Build_343/PlusHiveskillBars.lua")
+Script.Load("lua/TDplus/Build_343/PlusMarineGuide.lua")
+
 
 local oldGMTDLobbyScreenInitialize = GMTDLobbyScreen.Initialize
 function GMTDLobbyScreen:Initialize(params, errorDepth)
@@ -24,6 +26,17 @@ function GMTDLobbyScreen:Initialize(params, errorDepth)
     self.bars:AlignTopRight()
     self.bars:SetVisible(false)
     self.bars:SetLayer(2001)
+
+
+    self.marineguidebutton = CreateGUIObject("marineguidebutton", PlusMarineGuide, self,
+        {
+        },
+        errorDepth)
+    self.marineguidebutton:AlignTopLeft()
+    self.marineguidebutton:SetPosition(2130, 30 - 15 )
+    self.marineguidebutton:SetLayer(2002)
+    self.marineguidebutton:SetVisible(true)
+
 
     function hideBars()
       self.bars:SetVisible(false)
