@@ -24,4 +24,14 @@ function GMTDPlanningScreen:Initialize(params, errorDepth)
         self.mapvote:SetVisible(true)
     end
 
+    self.marineguidebutton = CreateGUIObject("marineguidebutton", PlusMarineGuide, self,
+        {
+        },
+        errorDepth)
+    self.marineguidebutton:AlignTopLeft()
+    self.marineguidebutton:SetPosition(2130, 30 - 15 )
+    self.marineguidebutton:SetLayer(2002)
+    self.marineguidebutton:SetVisible(true)
+
+
 end
