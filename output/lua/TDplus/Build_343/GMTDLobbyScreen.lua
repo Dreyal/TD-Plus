@@ -8,7 +8,23 @@ Script.Load("lua/TDplus/Build_343/PlusMarineGuide.lua")
 local oldGMTDLobbyScreenInitialize = GMTDLobbyScreen.Initialize
 function GMTDLobbyScreen:Initialize(params, errorDepth)
 
-      oldGMTDLobbyScreenInitialize(self, params, errorDepth)
+    oldGMTDLobbyScreenInitialize(self, params, errorDepth)
+
+
+    local function muteId(self, steamId)
+        self.chatWindow:AddMutedClient(steamId)
+    end
+    self:HookEvent(self.rightClickMenu, "muteId", muteId)
+
+    local function unmuteId(self, steamId)
+        self.chatWindow:RemoveMutedClient( steamId )
+    end
+    self:HookEvent(self.rightClickMenu, "unmuteId", unmuteId)
+
+    function GetMutedClients()
+        return self.chatWindow:GetMutedClients()
+    end
+
 
     self.target = CreateGUIObject("targetButton", PlusBabblerGame, self,
         {

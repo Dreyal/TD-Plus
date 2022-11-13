@@ -228,6 +228,7 @@ function GMTDPlayerPlaqueContextMenu:Initialize(params, errorDepth)
         self:OnHideContextMenu(false)
     end)
 
+    -- uses mutedclients in GMTDChatWidget instead of TDManager
     self.mutePlayerObj = CreateGUIObject("mutePlayer", GUIMenuSimpleTextButton, self.layout,
     {
         font = {family = "Agency", size = 52}
@@ -236,12 +237,12 @@ function GMTDPlayerPlaqueContextMenu:Initialize(params, errorDepth)
     function()
         local steamID64 = self:GetSteamID64()
         if steamID64 == "" then return end
-        local isMuted = table.icontains(Thunderdome():GetMutedClients(), steamID64)
+        local isMuted = table.icontains(GetMutedClients(), steamID64) 
         if isMuted then
-            Thunderdome():RemoveMutedClient(steamID64)
+            self:FireEvent("unmuteId", steamID64)
             self.mutePlayerObj:SetLabel(self.locale_MutePlayer)
         else
-            Thunderdome():AddMutedClient(steamID64)
+            self:FireEvent("muteId", steamID64)
             self.mutePlayerObj:SetLabel(self.locale_UnmutePlayer)
         end
         self:OnHideContextMenu(false)
@@ -311,10 +312,18 @@ end
 
 local oldGMTDPlayerPlaqueContextMenuOnSteamID64Changed = GMTDPlayerPlaqueContextMenu.OnSteamID64Changed
 function GMTDPlayerPlaqueContextMenu:OnSteamID64Changed(newSteamID)
-      oldGMTDPlayerPlaqueContextMenuOnSteamID64Changed(self, newSteamID)
-      local isSelf = newSteamID == GetLocalSteamID64()
-      self.gameendstats:SetVisible(isSelf)
-      self.youtube:SetVisible(isSelf)
+    oldGMTDPlayerPlaqueContextMenuOnSteamID64Changed(self, newSteamID)
+    local isSelf = newSteamID == GetLocalSteamID64()
+    self.gameendstats:SetVisible(isSelf)
+    self.youtube:SetVisible(isSelf)
+
+    local isMuted = table.icontains(GetMutedClients(), newSteamID)
+    if isMuted then
+        self.mutePlayerObj:SetLabel(self.locale_UnmutePlayer)
+    else
+        self.mutePlayerObj:SetLabel(self.locale_MutePlayer)
+    end
+    self.mutePlayerObj:SetVisible(not isSelf)
 end
 
 

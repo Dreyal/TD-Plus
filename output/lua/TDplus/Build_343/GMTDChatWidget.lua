@@ -7,14 +7,23 @@ local noEmote = PrecacheAsset("ui/emptyonebyone.dds")
 local oldGMTDChatWidgetAddNewChatMessage = GMTDChatWidget.AddNewChatMessage
 function GMTDChatWidget:AddNewChatMessage(lobbyId, senderName, senderTeam, message, senderSteamID64)
 
+    local newMessageMuted = false 
+
+    for i = 1, #self.mutedSteamIds do
+        if self.mutedSteamIds[i] == senderSteamID64 then   
+            newMessageMuted = true
+        end
+    end
+
+
     local k = string.find(message, "/watch" )
-    if k == 1 then
+    if k == 1 and newMessageMuted == false then
       -- send the link to menu navbar
       youtubePopup("https://www.youtube.com" .. message)
     end
 
     local j = string.find(message, "youtu.be/")
-    if j == 1 then  
+    if j == 1 and newMessageMuted == false then  
         youtubePopup(message)
     end
 
@@ -28,13 +37,34 @@ function GMTDChatWidget:AddNewChatMessage(lobbyId, senderName, senderTeam, messa
         self.chatMessages[chatIndex].emoteIcon:SetVisible(true)
     end)
 
-    self.chatMessages[chatIndex].emoteIcon:SetVisible(not self.emotemenu.iconRed:GetVisible())
+
+    local function OnMute(self, steamId)
+        if self.chatMessages[chatIndex]:GetSenderSteamID64() == steamId then
+            self.chatMessages[chatIndex].emoteIcon:SetVisible(false)
+            self.chatMessages[chatIndex]:SetVisible(false)
+        end
+    end
+    self:HookEvent(self, "mute", OnMute)
+
+    local function OnUnmute(self, steamId)
+        if self.chatMessages[chatIndex]:GetSenderSteamID64() == steamId then
+            self.chatMessages[chatIndex].emoteIcon:SetVisible(not self.emotemenu.iconRed:GetVisible())
+            self.chatMessages[chatIndex]:SetVisible(true)
+        end
+    end
+    self:HookEvent(self, "unmute", OnUnmute)
+
+
+    self.chatMessages[chatIndex].emoteIcon:SetVisible(not self.emotemenu.iconRed:GetVisible() and not newMessageMuted)
+    self.chatMessages[chatIndex]:SetVisible(not newMessageMuted)
 end
 
 local oldGMTDChatWidgetClear = GMTDChatWidget.Clear
 function GMTDChatWidget:Clear()
     self:UnHookEventsByName("hideEmotes")
     self:UnHookEventsByName("showEmotes")
+    self:UnHookEventsByName("mute")
+    self:UnHookEventsByName("unmute")
     oldGMTDChatWidgetClear(self)
 end
 
@@ -43,6 +73,12 @@ end
 local oldGMTDChatWidgetInitialize = GMTDChatWidget.Initialize
 function GMTDChatWidget:Initialize(params, errorDepth)
 
+
+
+        --array of steam64Id strings which denote local-client won't see chat messages from
+        self.mutedSteamIds = {}
+       
+    
       --emote would overlap with the message
         if params.label == "TEAM CHAT" then
             params.label = "CHAT"
@@ -88,9 +124,31 @@ function GMTDChatWidget:Initialize(params, errorDepth)
       self:HookEvent(self.chatInput, "OnValueChanged", function()
           self.editLineEmote:SetPosition(self.chatInput.entry:GetSize().x + 130 , 10)
       end)
-
-
 end
+
+function GMTDChatWidget:GetMutedClients()
+    return self.mutedSteamIds
+end
+
+--fire a check for all messages by the ID to be hidden
+function GMTDChatWidget:AddMutedClient(steamId)
+    assert(steamId)
+    self:FireEvent("mute", steamId)
+    table.insert(self.mutedSteamIds, steamId)
+ end
+
+
+ --fire a check for all messages by the ID to be visible again
+ function GMTDChatWidget:RemoveMutedClient( steamId )
+     assert(steamId)
+     self:FireEvent("unmute", steamId)
+     for i = 1, #self.mutedSteamIds do
+        if self.mutedSteamIds[i] == steamId then
+            table.remove( self.mutedSteamIds, i )
+        end
+    end
+ end
+
 
 function GMTDChatWidget:OnChatInputAccepted()
     local td = Thunderdome()
@@ -132,3 +190,5 @@ end
 function GMTDChatWidget:SetChatWidgetFocused()
     self.chatInput:SetEditing(true)
 end
+
+

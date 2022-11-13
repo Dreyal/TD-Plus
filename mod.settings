@@ -1,27 +1,26 @@
-name        = "[343] TD Plus"
+name        = "[342/3] TD Plus"
 source_dir  = "source"
 output_dir  = "output"
-description = [=[To enable Mods go to the titlescreen -> options -> mods -> manage mods -> search for "[343] TD Plus" -> check the box -> click restart
+description = [=[To enable Mods go to the titlescreen -> options -> mods -> manage mods -> search for "[342/3] TD Plus" -> check the box -> click restart
 
 This mod adds some QoL changes for matchmaking lobbies
 - displays hiveskill for all players
 - displays playtime progress of all mod users in the lobby
 - shows the hiveskill change since the last launch for each lobby member
 - adds a button to open the statsmenu for the last round played at the rightclick menu
-- adds a button to allow youtube links in the chat to be opened ingame
+- allows youtube links in the chat to be opened ingame
 - skip the lobbysearch with the console command "newlobby"
 - adds a small babbler shooting minigame
 - adds 30 emotes for the chat (not visible for non mod user)
 - displays the average hiveskill of both teams at the mapvote
 - displays the top 3 voted map in the planning menu
+- messages of muted users will be added back when unmuted
 
 
 Please share feedback and suggestions. They motivate me to continue working on this mod :)
 
 If youre looking for others to play Matchmaking check out our Discord at https://discord.gg/Ttb4y5QE
 ]=]
-
-
 image       = "preview.jpg"
 tag_modtype = "Look and Feel"
 tag_support = "Passes Default Consistency"
