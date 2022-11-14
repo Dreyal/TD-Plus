@@ -110,7 +110,11 @@ function GMTDPlayerPlaqueContextMenu:Initialize(params, errorDepth)
                 self.tdprogress:SetVisible(true)
             end
 
-
+            local state = Thunderdome():GetLobbyState()
+            if state > 4 then 
+                self.tdprogress:SetVisible(false)
+            end
+            
             local steamId32 = Shared.ConvertSteamId64To32(steamID64)
             local requestUrl = string.format("%s%s", "http://hive2.ns2cdt.com/api/players/", steamId32)
             Shared.SendHTTPRequest(requestUrl, "GET", OtherParseHiveProfileResponse)
@@ -167,7 +171,7 @@ function GMTDPlayerPlaqueContextMenu:Initialize(params, errorDepth)
     {
         font = {family = "Agency", size = 40}
     }, errorDepth  )
-    self.gameendstats:SetLabel("Last Round Stats")
+    self.gameendstats:SetLabel("View Roundstats")
     self:HookEvent(self.gameendstats, "OnPressed",
     function()
         if loadedgameendstats == false then
@@ -201,6 +205,27 @@ function GMTDPlayerPlaqueContextMenu:Initialize(params, errorDepth)
     function setDJtext(text)
         self.youtube:SetLabel(text)
     end
+
+    self.command = CreateGUIObject("command", GUIMenuSimpleTextButton, self.layout,
+    {
+        font = {family = "Agency", size = 40}
+    }, errorDepth  )
+    self.command:SetLabel("Withdraw as Comm")
+    self:HookEvent(self.command, "OnPressed",
+    function()
+        if "Withdraw as Comm" == self.command:GetLabel() then
+            local state = Thunderdome():GetLobbyState()
+            if state < 3 then 
+                Thunderdome():SetLocalCommandAble(0)
+                self.command:SetLabel("Volunteer as Comm")
+            end
+        else
+            Thunderdome():SetLocalCommandAble(1)
+            self.command:SetLabel("Withdraw as Comm")
+        end
+    end)
+
+
 ---------------------------------------------
     self.viewSteamProfileObj = CreateGUIObject("viewSteamProfile", GUIMenuSimpleTextButton, self.layout,
     {
@@ -288,6 +313,7 @@ function GMTDPlayerPlaqueContextMenu:Initialize(params, errorDepth)
     self.ns2panel:SetFont({family = "Agency", size = textsize})
     self.gameendstats:SetFont({family = "Agency", size = textsize})
     self.youtube:SetFont({family = "Agency", size = textsize})
+    self.command:SetFont({family = "Agency", size = textsize})
 
     self.viewSteamProfileObj:SetFont({family = "Agency", size = textsize})
     self.addToFriendsObj:SetFont({family = "Agency", size = textsize})
@@ -317,6 +343,9 @@ function GMTDPlayerPlaqueContextMenu:OnSteamID64Changed(newSteamID)
     self.gameendstats:SetVisible(isSelf)
     self.youtube:SetVisible(isSelf)
 
+    local state = Thunderdome():GetLobbyState()
+    self.command:SetVisible(isSelf and state < 3)
+
     local isMuted = table.icontains(GetMutedClients(), newSteamID)
     if isMuted then
         self.mutePlayerObj:SetLabel(self.locale_UnmutePlayer)
@@ -324,6 +353,7 @@ function GMTDPlayerPlaqueContextMenu:OnSteamID64Changed(newSteamID)
         self.mutePlayerObj:SetLabel(self.locale_MutePlayer)
     end
     self.mutePlayerObj:SetVisible(not isSelf)
+    
 end
 
 
