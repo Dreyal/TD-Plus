@@ -115,7 +115,7 @@ function PlusHiveskillBars:calcTeamskillgraph()
 
     if team1count + team2count ~= 12 or team3count + team4count ~= 12 then
         self:SetVisible(false)
-        Shared.Message("Missing data for 1+ player at shuffle")
+        Shared.Message("Missing data for 1+ player at hiveskillbars")
         return
     end
 

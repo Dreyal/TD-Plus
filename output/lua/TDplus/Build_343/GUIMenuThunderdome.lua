@@ -24,11 +24,14 @@ function GUIMenuThunderdome:Initialize(params, errorDepth)
 
         showBars()
         deleteHoursInLifeforms()
+        self:RemoveTimedCallback(self.hoursCallback)
+        self.hoursCallback = nil
 
         --TODO notify that the lobby started instead of deleting it
         self:deleteApathy()
         self:RemoveTimedCallback(self.apathyCallback)
         self.apathyCallback = nil
+
     end
 
     local oldTD_UpdateStatusBars = self.TD_UpdateStatusBars
@@ -36,8 +39,8 @@ function GUIMenuThunderdome:Initialize(params, errorDepth)
         oldTD_UpdateStatusBars(clientObject, memberId, lobbyId)
 
         hideBars()
-        if not HoursInLifefromData and not Thunderdome():GetIsGroupId(lobbyId) then 
-            writeHoursInLifeforms()
+        if not self.hoursCallback and not HoursInLifefromData and not Thunderdome():GetIsGroupId(lobbyId) then 
+            self.hoursCallback = self:AddTimedCallback( self.writeHoursInLifeforms, 2)
         end
         
         if not self.apathyCallback and not Thunderdome():GetIsGroupId(lobbyId) then 
@@ -50,8 +53,9 @@ function GUIMenuThunderdome:Initialize(params, errorDepth)
     self.TDLobbyJoined = function( clientObject, lobbyId )
         oldTDLobbyJoined(clientObject, lobbyId)
 
-        if not Thunderdome():GetIsGroupId(lobbyId) then 
-            writeHoursInLifeforms()
+        HoursInLifefromData = false
+        if not self.hoursCallback and not Thunderdome():GetIsGroupId(lobbyId) then 
+            self.hoursCallback = self:AddTimedCallback( self.writeHoursInLifeforms, 2)
         end
         hideBars()
         self:RemoveTimedCallback(searchAfterAfkCallback)
@@ -63,6 +67,7 @@ function GUIMenuThunderdome:Initialize(params, errorDepth)
         end
     end
 
+    --TODO causes some issues if the client searches manually at the same time
     local oldTD_MaxLobbyLifespanPrompt = self.TD_MaxLobbyLifespanPrompt
     self.TD_MaxLobbyLifespanPrompt = function(clientModeObject)
         oldTD_MaxLobbyLifespanPrompt(clientModeObject)
@@ -102,7 +107,7 @@ function GUIMenuThunderdome:Initialize(params, errorDepth)
 
 
 -- yes this is hacky. We dont have many ways to share data with other modded clients
-function writeHoursInLifeforms()
+function GUIMenuThunderdome:writeHoursInLifeforms()
     local fieldhours = Client.GetUserStat_Int("td_total_time_player") or 0
     fieldhours = math.floor(fieldhours / 3600)
    

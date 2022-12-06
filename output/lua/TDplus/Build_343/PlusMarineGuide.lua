@@ -32,7 +32,7 @@ function PlusMarineGuide:Initialize(params, errorDepth)
     self.commbadge = CreateGUIObject( "commbadge", GUIGraphic, self, nil, errorDepth )
     self.commbadge:AlignCenter()
     self.commbadge:SetTexture(commbadgeTexture)
-    self.commbadge:SetSize( 250,250)
+    self.commbadge:SetSize( 200,200)
     self.commbadge:SetVisible(true)
     self:SetTooltip("Show Guide")
 

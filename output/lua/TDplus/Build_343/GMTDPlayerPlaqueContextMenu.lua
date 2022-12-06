@@ -106,7 +106,7 @@ function GMTDPlayerPlaqueContextMenu:Initialize(params, errorDepth)
             if not fieldhourdata then 
                 self.tdprogress:SetVisible(false)
             else 
-                self.tdprogress:SetText("Playtime: " .. fieldhourdata .. "h")
+                self.tdprogress:SetText("Playtime: " .. fieldhourdata .. " hours")
                 self.tdprogress:SetVisible(true)
             end
 
@@ -117,7 +117,7 @@ function GMTDPlayerPlaqueContextMenu:Initialize(params, errorDepth)
             
             local steamId32 = Shared.ConvertSteamId64To32(steamID64)
             local requestUrl = string.format("%s%s", "http://hive2.ns2cdt.com/api/players/", steamId32)
-            Shared.SendHTTPRequest(requestUrl, "GET", OtherParseHiveProfileResponse)
+            --Shared.SendHTTPRequest(requestUrl, "GET", OtherParseHiveProfileResponse)
 
             self.marineskill:SetText("Marine: " .. tostring(memberModel.marine_skill))
             self.alienskill:SetText("Kharaa: " .. tostring(memberModel.alien_skill))
@@ -344,7 +344,7 @@ function GMTDPlayerPlaqueContextMenu:OnSteamID64Changed(newSteamID)
     self.youtube:SetVisible(isSelf)
 
     local state = Thunderdome():GetLobbyState()
-    self.command:SetVisible(isSelf and state < 3)
+    self.command:SetVisible(isSelf and state and state < 3)
 
     local isMuted = table.icontains(GetMutedClients(), newSteamID)
     if isMuted then
