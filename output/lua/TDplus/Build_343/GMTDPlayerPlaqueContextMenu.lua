@@ -344,7 +344,10 @@ function GMTDPlayerPlaqueContextMenu:OnSteamID64Changed(newSteamID)
     self.youtube:SetVisible(isSelf)
 
     local state = Thunderdome():GetLobbyState()
-    self.command:SetVisible(isSelf and state and state < 3)
+    
+    if state ~= nil then 
+        self.command:SetVisible(isSelf and state < 3)
+    end
 
     local isMuted = table.icontains(GetMutedClients(), newSteamID)
     if isMuted then

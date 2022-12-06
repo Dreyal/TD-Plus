@@ -12,7 +12,7 @@ function printHelp(...)
     Shared.Message("serverbrowser")
     Shared.Message("seeding")
 end
-Event.Hook("help", printHelp)
+Event.Hook("Console_help", printHelp)
 
 
 -- needs some kind of GUI to show its active
