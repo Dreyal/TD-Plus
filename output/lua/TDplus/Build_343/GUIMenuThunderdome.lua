@@ -22,6 +22,8 @@ function GUIMenuThunderdome:Initialize(params, errorDepth)
     self.TDMapVoteStarted = function( clientObject, lobbyId )
         oldTDMapVoteStarted(clientObject, lobbyId)
 
+
+
         showBars()
         deleteHoursInLifeforms()
         self:RemoveTimedCallback(self.hoursCallback)
@@ -58,7 +60,7 @@ function GUIMenuThunderdome:Initialize(params, errorDepth)
             self.hoursCallback = self:AddTimedCallback( self.writeHoursInLifeforms, 2)
         end
         hideBars()
-        self:RemoveTimedCallback(searchAfterAfkCallback)
+        self:RemoveTimedCallback(self.searchAfterAfkCallback)
         self.searchAfterAfkCallback = nil
 
         if not self.apathyCallback and not Thunderdome():GetIsGroupId(lobbyId) then 
@@ -85,6 +87,11 @@ function GUIMenuThunderdome:Initialize(params, errorDepth)
     self.TD_OnLobbyLeft = function( clientObject, lobbyId ) -- params are nil
         oldTD_OnLobbyLeft(clientObject, lobbyId)
         disableYoutube()
+
+
+        self:RemoveTimedCallback(self.hoursCallback)
+        self.hoursCallback = nil
+        HoursInLifefromData = false
 
         self:deleteApathy()
         self:RemoveTimedCallback(self.apathyCallback)
