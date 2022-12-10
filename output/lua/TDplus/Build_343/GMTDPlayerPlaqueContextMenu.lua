@@ -161,7 +161,7 @@ function GMTDPlayerPlaqueContextMenu:Initialize(params, errorDepth)
         local steamID64 = self:GetSteamID64()
         if steamID64 == "" then return end
         local steamId32 = Shared.ConvertSteamId64To32(steamID64)
-        local ns2panel = "https://ns2panel.ocservers.com/player/" .. tostring(steamId32)
+        local ns2panel = "https://ns2panel.com/player/" .. tostring(steamId32) .. "/td"
         Client.ShowWebpage(string.format(ns2panel))
         self:OnHideContextMenu(false)
     end)
