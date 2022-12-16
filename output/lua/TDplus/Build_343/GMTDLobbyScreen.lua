@@ -140,6 +140,13 @@ function GMTDLobbyScreen:calcMapvotes()
 
         end
 
+        for i = 1, #mapVotes do
+            if mapVotes[i].map == "RANDOMIZE" then
+                mapVotes[i].map = "ns2_RANDOMIZE" -- we remove the first 4 chars later for all mapvotes 
+            end
+
+        end
+
         mapVotes[1].map = mapVotes[1].map or "none"
         mapVotes[1].count = mapVotes[1].count or 1
         mapVotes[2].map = mapVotes[2].map or "none"
