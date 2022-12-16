@@ -29,8 +29,7 @@ function GUIMenuThunderdome:Initialize(params, errorDepth)
         self:RemoveTimedCallback(self.hoursCallback)
         self.hoursCallback = nil
 
-        --TODO notify that the lobby started instead of deleting it
-        self:deleteApathy()
+
         self:RemoveTimedCallback(self.apathyCallback)
         self.apathyCallback = nil
 
@@ -93,7 +92,6 @@ function GUIMenuThunderdome:Initialize(params, errorDepth)
         self.hoursCallback = nil
         HoursInLifefromData = false
 
-        self:deleteApathy()
         self:RemoveTimedCallback(self.apathyCallback)
         self.apathyCallback = nil
         
@@ -185,45 +183,33 @@ function GUIMenuThunderdome:UpdateStatusBars( lobbyId )
     end
 end
 
--- TODO call it when becoming the new lobby owner
+
 -- called everytime someone leaves or joins except when youre leaving yourself
 function GUIMenuThunderdome:updateApathy()
-    if Thunderdome():GetLocalClientIsOwner() then 
-        self.isOwner = true 
+    
+    self.isOwner = true 
 
-        local requestUrl = "https://lobby.fortreeforums.xyz/thunderdome/add.php?id=" .. tostring(self.cachedLobbyID)
-        local generatedUrl = ""
-        local player     = "&player[]="
-        local  name       = "&name[]="
-        local  skill      = "&skill[]="
-        local  marine     = "&marine[]="
-        local  alien      = "&alien[]="
-        local  marineComm = "&marineComm[]="
-        local  alienComm  = "&alienComm[]="
+    local requestUrl = "https://lobby.fortreeforums.xyz/thunderdome/add.php?id=" .. tostring(self.cachedLobbyID)
+    local generatedUrl = ""
+    local playerId     = "&player[]="
+    local name       = "&name[]="
+    local isCommander = "&isCommander[]="
+    local join_time = "&join_time[]="
 
-        local memberData = Thunderdome():GetMemberListLocalData(self.cachedLobbyID)
-        if not memberData then 
-            return 
-        end 
+    local memberData = Thunderdome():GetMemberListLocalData(self.cachedLobbyID)
+    if not memberData then 
+        return 
+    end 
 
-        for i = 1, #memberData do 
-            local ply = memberData[i]
-            ply.steamid = Shared.ConvertSteamId64To32(ply.steamid)
-            generatedUrl = string.format("%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s", generatedUrl,player, ply.steamid, name, ply.name, skill, ply.avg_skill, marine, ply.marine_skill, alien, ply.alien_skill, marineComm, ply.marine_comm_skill, alienComm, ply.alien_comm_skill)
-        end
-
-        local completeUrl = requestUrl .. generatedUrl
-        Shared.Message("Sending lobbyinfo to " .. requestUrl)
-        Shared.SendHTTPRequest(completeUrl, "GET")   
+    for i = 1, #memberData do 
+        local ply = memberData[i]
+        ply.steamid = Shared.ConvertSteamId64To32(ply.steamid)
+        generatedUrl = string.format("%s%s%s%s%s%s%s%s", playerId, ply.steamid , name, ply.name, isCommander, ply.commander_able, join_time, ply.join_time)
     end
+
+    local completeUrl = requestUrl .. generatedUrl
+    Shared.Message("Sending lobbyinfo to " .. requestUrl)
+    Shared.SendHTTPRequest(completeUrl, "GET")   
+    
 end
 
--- called when leaving a lobby or mapvote starts
-function GUIMenuThunderdome:deleteApathy()
-    if self.isOwner and not Thunderdome():GetIsGroupId(self.cachedLobbyID) then 
-        local requestUrl = string.format("https://lobby.fortreeforums.xyz/thunderdome/delete.php?id=%s&steamId=%s", self.cachedLobbyID, Client.GetSteamId())
-        Shared.Message("Sending lobbyinfo to " .. requestUrl)
-        Shared.SendHTTPRequest(requestUrl, "GET")
-        self.isOwner = false 
-    end
-end
