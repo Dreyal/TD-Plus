@@ -55,53 +55,6 @@ function GMTDPlayerPlaqueContextMenu:Initialize(params, errorDepth)
             if memberModel then
 
 
-            -- fetch request takes a bit, it should update the values by itself once its receives the data
-            local function OtherParseHiveProfileResponse( response, errMsg, errCode )
-                if errCode == kHttpOpTimeoutErrorCode or errCode == kHttpOpRefusedErrorCode then
-                --Hive did not respond in a timely manner, check retry and attempt or fail-out
-                    if kNumHiveProfileFetchAttempts <= kMaxHiveProfileAttemptsLimit then
-                        kNumHiveProfileFetchAttempts = kNumHiveProfileFetchAttempts + 1
-                        Log("Re-attempting[%s] Hive profile fetch...", kNumHiveProfileFetchAttempts)
-                        RequestHiveProfile()
-                    end
-                    return
-                end
-
-                local obj, pos, err = json.decode(response, 1, nil)
-
-                if not obj then
-                    Log("Error: failed to retrieve Hive profile:\n%s\n%s\n%s", obj, pos, err)
-                    return false
-                end
-
-                if obj and err then
-                    return false
-                end
-
-                obj.level = obj.level or 0
-                obj.td_skill = obj.td_skill or 0
-                obj.td_skill_offset = obj.td_skill_offset or 0
-
-                --local  fetchedLevel = obj.level
-
-                local MarineSkillDiff = obj.td_skill + obj.td_skill_offset - tonumber(memberModel.marine_skill)
-                local AlienSkillDiff = obj.td_skill - obj.td_skill_offset - tonumber(memberModel.alien_skill)
-
-                local function diffstring(skilldiff)
-                    if skilldiff >= 1 then
-                        return " +" .. tostring(skilldiff)
-                    elseif skilldiff <= -1 then
-                        return " " .. tostring(skilldiff) -- it shows already "-"
-                    else
-                        return ""
-                    end
-                end
-                --Shared.Message(tostring(fetchedLevel))
-
-                self.marineskill:SetText("Marine: " .. tostring(memberModel.marine_skill) .. diffstring(MarineSkillDiff))
-                self.alienskill:SetText("Kharaa: " .. tostring(memberModel.alien_skill) .. diffstring(AlienSkillDiff))
-            end
-
             local fieldhourdata = calcFieldhoursFromLifeforms(memberModel)
             if not fieldhourdata then 
                 self.tdprogress:SetVisible(false)
@@ -115,10 +68,6 @@ function GMTDPlayerPlaqueContextMenu:Initialize(params, errorDepth)
                 self.tdprogress:SetVisible(false)
             end
             
-            local steamId32 = Shared.ConvertSteamId64To32(steamID64)
-            local requestUrl = string.format("%s%s", "http://hive2.ns2cdt.com/api/players/", steamId32)
-            --Shared.SendHTTPRequest(requestUrl, "GET", OtherParseHiveProfileResponse)
-
             self.marineskill:SetText("Marine: " .. tostring(memberModel.marine_skill))
             self.alienskill:SetText("Kharaa: " .. tostring(memberModel.alien_skill))
             self.marineskill:SetVisible(true)
@@ -220,8 +169,10 @@ function GMTDPlayerPlaqueContextMenu:Initialize(params, errorDepth)
                 self.command:SetLabel("Volunteer as Comm")
             end
         else
-            Thunderdome():SetLocalCommandAble(1)
-            self.command:SetLabel("Withdraw as Comm")
+            if state < 3 then 
+                Thunderdome():SetLocalCommandAble(1)
+                self.command:SetLabel("Withdraw as Comm")
+            end
         end
     end)
 
