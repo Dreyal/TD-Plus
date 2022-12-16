@@ -67,10 +67,27 @@ function GMTDPlayerPlaqueWidget:UpdatePlayerDataElements( lobbyId )
 
     if memberModel then
 
-        if (memberModel.avg_skill == nil) or (memberModel.avg_skill == false)  then
+        if (memberModel.avg_skill == nil) or (memberModel.avg_skill == false) or (memberModel.adagrad == nil) or (memberModel.adagrad == false) then
             self.hiveskill:SetText("")
         else
-            self.hiveskill:SetText(tostring(math.floor(memberModel.avg_skill + 0.5 )))
+            --self.hiveskill:SetText(tostring(math.floor(memberModel.avg_skill + 0.5 )))
+
+            local displaySkill = 0
+            if memberModel.adagrad > 0 then
+                displaySkill = math.max(memberModel.avg_skill - 25 / math.sqrt(memberModel.adagrad), 0)
+            end
+
+
+            self.hiveskill:SetText(tostring(math.floor(displaySkill + 0.5 )))
+            
+        end
+
+        local isCommanderVolunteer = memberModel.commander_able == 1 and self:GetCommanderIconEnabled()
+        self.commanderIcon:SetVisible(isCommanderVolunteer)
+
+        -- move the commandericon up instead of replacing it
+        if lobbyState == kLobbyState.WaitingForMapVote then  
+            self.commanderIcon:SetPosition(0, -45)
         end
 
     end
