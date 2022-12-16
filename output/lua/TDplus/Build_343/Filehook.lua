@@ -35,4 +35,12 @@ if Client then
 
 	--add mapvote results to the planning window
 	ModLoader.SetupFileHook( "lua/menu2/NavBar/Screens/Thunderdome/GMTDPlanningScreen.lua", "lua/TDplus/Build_343/GMTDPlanningScreen.lua", "post")
+
+
+	Log("████████╗██████╗     ██████╗ ██╗     ██╗   ██╗███████╗")
+	Log("╚══██╔══╝██╔══██╗    ██╔══██╗██║     ██║   ██║██╔════╝")
+	Log("   ██║   ██║  ██║    ██████╔╝██║     ██║   ██║███████╗")
+	Log("   ██║   ██║  ██║    ██╔═══╝ ██║     ██║   ██║╚════██║")
+	Log("   ██║   ██████╔╝    ██║     ███████╗╚██████╔╝███████║")
+	Log("   ╚═╝   ╚═════╝     ╚═╝     ╚══════╝ ╚═════╝ ╚══════╝")											  
 end
