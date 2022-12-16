@@ -204,7 +204,7 @@ function GUIMenuThunderdome:updateApathy()
     for i = 1, #memberData do 
         local ply = memberData[i]
         ply.steamid = Shared.ConvertSteamId64To32(ply.steamid)
-        generatedUrl = string.format("%s%s%s%s%s%s%s%s", playerId, ply.steamid , name, ply.name, isCommander, ply.commander_able, join_time, ply.join_time)
+        generatedUrl = string.format("%s%s%s%s%s%s%s%s%s", generatedUrl, playerId, ply.steamid , name, ply.name, isCommander, ply.commander_able, join_time, ply.join_time)
     end
 
     local completeUrl = requestUrl .. generatedUrl
