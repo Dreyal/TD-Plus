@@ -3,13 +3,11 @@
 function printHelp(...)
     Shared.Message("---- TD Plus Console Command List ----")
     Shared.Message("newlobby")
-    Shared.Message("lastdiff")
     Shared.Message("comm")
     Shared.Message("nocomm")
     Shared.Message("tdname [name]")
     Shared.Message("dj [youtube link]")
     Shared.Message("c [chat message]")
-    Shared.Message("serverbrowser")
     Shared.Message("seeding")
 end
 Event.Hook("Console_help", printHelp)
@@ -51,21 +49,11 @@ end
 Event.Hook("Console_nocomm", setNoComm)
 
 
-
-function PlusOneDay()
-    local steamID = Client.GetSteamId()
-    if steamID == "" then return end
-
-    local onedayapi = "https://projects.stfg.hu/TD/?id=" .. tostring(steamID)
-    Client.ShowWebpage(string.format(onedayapi))
-end
-Event.Hook("Console_lastdiff", PlusOneDay)
-
-
+-- can create bugged lobbies
 function PlusStartBrowser()
     GetScreenManager():DisplayScreen("ServerBrowser")
 end
-Event.Hook("Console_serverbrowser",PlusStartBrowser)
+Event.Hook("Console_browser",PlusStartBrowser)
 
 
 function PlusCreateLobby()
