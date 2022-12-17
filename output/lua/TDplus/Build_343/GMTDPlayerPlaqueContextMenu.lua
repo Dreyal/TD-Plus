@@ -162,8 +162,8 @@ function GMTDPlayerPlaqueContextMenu:Initialize(params, errorDepth)
     self.command:SetLabel("Withdraw as Comm")
     self:HookEvent(self.command, "OnPressed",
     function()
+        local state = Thunderdome():GetLobbyState()
         if "Withdraw as Comm" == self.command:GetLabel() then
-            local state = Thunderdome():GetLobbyState()
             if state < 3 then 
                 Thunderdome():SetLocalCommandAble(0)
                 self.command:SetLabel("Volunteer as Comm")
