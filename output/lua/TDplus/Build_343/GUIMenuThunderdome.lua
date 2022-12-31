@@ -6,7 +6,6 @@ local oldGUIMenuThunderdomeInitialize = GUIMenuThunderdome.Initialize
 function GUIMenuThunderdome:Initialize(params, errorDepth)
 
     oldGUIMenuThunderdomeInitialize(self, params, errorDepth)
-    self.isOwner = false
 
     Thunderdome_RemoveListener(kThunderdomeEvents.OnGUILeaveLobby,              self.TD_OnLobbyLeft)
     Thunderdome_RemoveListener(kThunderdomeEvents.OnGUIMapVoteStart,    self.TDMapVoteStarted)
@@ -187,8 +186,6 @@ end
 -- called everytime someone leaves or joins except when youre leaving yourself
 function GUIMenuThunderdome:updateApathy()
     
-    self.isOwner = true 
-
     local requestUrl = "https://lobby.fortreeforums.xyz/thunderdome/add.php?id=" .. tostring(self.cachedLobbyID)
     local generatedUrl = ""
     local playerId     = "&player[]="
