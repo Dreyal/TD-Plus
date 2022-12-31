@@ -1,7 +1,7 @@
-name        = "[343] TD Plus"
+name        = "TD Plus"
 source_dir  = "source"
 output_dir  = "output"
-description = [=[To enable Mods go to the titlescreen -> options -> mods -> manage mods -> search for "[343] TD Plus" -> check the box -> click restart
+description = [=[To enable Mods go to the titlescreen -> options -> mods -> manage mods -> search for "TD Plus" -> check the box -> click restart
 
 This mod adds some QoL changes for matchmaking lobbies
 - displays hiveskill for all players
