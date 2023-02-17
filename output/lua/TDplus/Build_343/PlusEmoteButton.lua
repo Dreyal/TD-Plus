@@ -138,16 +138,3 @@ function PlusEmoteButton:OnPressed()
 
     self:FireEvent("setChatFocused")
 end
-
-
-function PlusEmoteButton:Chat(sender, chatMessage)
-      local td = Thunderdome()
-      assert(td, "Error: No valid Thunderdome object found!")
-      local lobby
-      if td:GetIsGroupQueueEnabled() then
-          lobby = td:GetGroupLobby()
-      else
-          lobby = td:GetActiveLobby()
-      end
-      Thunderdome():TriggerEvent( kThunderdomeEvents.OnGUIChatMessage,lobby:GetId(), sender, chatMessage, 0, 13 )
-end
