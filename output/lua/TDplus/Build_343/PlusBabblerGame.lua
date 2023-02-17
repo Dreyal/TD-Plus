@@ -64,7 +64,7 @@ function PlusBabblerGame:OnPressed()
     local y = math.random(152,1230)
 
     if clickCount == 0 then
-      self:Chat("TD Plus", "Shot 10 Babblers!")
+      self:BabblerChat("Shot 10 Babblers!", false)
       x = 1548
       y = 691
       starttime =  Shared.GetTime()
@@ -75,13 +75,13 @@ function PlusBabblerGame:OnPressed()
         endtime =  Shared.GetTime()
         if highscore == 0 then  -- ende erster Runde
             highscore = endtime-starttime
-            self:Chat("TD Plus", "Time: " .. string.sub(tostring(endtime-starttime), 1, 5) )
+            self:BabblerChat("Time: " .. string.sub(tostring(endtime-starttime), 1, 5) .. "                                ", endtime-starttime )
 
         elseif endtime-starttime < highscore then -- Highscore
-            self:Chat("TD Plus", "Time: " .. string.sub(tostring(endtime-starttime), 1, 5) .. " New Highscore!")
+            self:BabblerChat( "Time: " .. string.sub(tostring(endtime-starttime), 1, 5) .. " New Best!" .. "                                ", endtime-starttime)
             highscore = endtime-starttime
         else -- kein highscore
-            self:Chat("TD Plus", "Time: " .. string.sub(tostring(endtime-starttime), 1, 5))
+            self:BabblerChat( "Time: " .. string.sub(tostring(endtime-starttime), 1, 5) .. "                                ", endtime-starttime)
         end
 
         if endtime - starttime < 5.5 then
@@ -99,41 +99,18 @@ function PlusBabblerGame:OnPressed()
 
     self:SetPosition( x, y)
 
-
-    -- Babbler gets transparent the more you play, for fun
-    if clickCount == 50 then
-      self.icon:SetColor( Color(1,1,1,0.8) )
-      self.iconActive:SetColor( Color(1,1,1,0.9) )
-    elseif
-      clickCount == 60 then
-      self.icon:SetColor( Color(1,1,1,0.6) )
-      self.iconActive:SetColor( Color(1,1,1,0.7) )
-    elseif
-      clickCount == 70 then
-      self.icon:SetColor( Color(1,1,1,0.4) )
-      self.iconActive:SetColor( Color(1,1,1,0.5) )
-    elseif
-      clickCount == 80 then
-      self.icon:SetColor( Color(1,1,1,0.3) )
-      self.iconActive:SetColor( Color(1,1,1,0.4) )
-    elseif
-      clickCount == 90 then
-      self.icon:SetColor( Color(1,1,1,0.2) )
-      self.iconActive:SetColor( Color(1,1,1,0.3) )
-    elseif
-      clickCount == 100 then
-      self.icon:SetColor( Color(1,1,1,0.1) )
-      self.iconActive:SetColor( Color(1,1,1,0.2) )
-    elseif
-      clickCount == 110 then
-      self.icon:SetColor( Color(1,1,1,0) )
-      self.iconActive:SetColor( Color(1,1,1,0.1) )
-    end
+    
       clickCount = clickCount + 1
 end
 
--- sender doesnt show up, when the last message was by this command too
-function PlusBabblerGame:Chat(sender, chatMessage)
+
+function PlusBabblerGame:BabblerChat(chatMessage, time)
       local td = Thunderdome()
-      Thunderdome():TriggerEvent( kThunderdomeEvents.OnGUIChatMessage,td:GetActiveLobbyId(), sender, chatMessage, 0, 13 )
+
+      if time and time <= 10 then 
+          td:SendChatMessage(chatMessage,Thunderdome():GetActiveLobbyId())
+      else 
+        td:TriggerEvent( kThunderdomeEvents.OnGUIChatMessage,td:GetActiveLobbyId(), "TD Plus", chatMessage, 0, 13 )
+      end
 end
+
