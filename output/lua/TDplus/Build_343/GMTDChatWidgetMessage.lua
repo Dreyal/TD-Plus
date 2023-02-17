@@ -39,8 +39,8 @@ function GMTDChatWidgetMessage:ApplyEmotesForSpacecounters(message, isExtension,
           end
           self.bigemote = false
 
-          -- we got 30 pictures at 2 to 31
-          if spaceCounter > 1 and spaceCounter < 32 then
+          -- we got 30 pictures at 2 to 31 and also a babbler for the game at 32
+          if spaceCounter > 1 and spaceCounter < 33 then
 
             self.spaces = spaceCounter
 
@@ -83,6 +83,12 @@ function GMTDChatWidgetMessage:ApplyEmotesForSpacecounters(message, isExtension,
                 object:SetFloatParameter("horizontalFrames", 5)
                 object:SetFloatParameter("verticalFrames",   1  )
                 object:SetFloatParameter("numFrames",        2   )
+            elseif self.spaces == 32 then -- babbler for game
+                object:SetTexture("ui/TDbabblerSmall.dds")
+                object:SetFloatParameter("framesPerSecond",  1 )
+                object:SetFloatParameter("horizontalFrames", 1)
+                object:SetFloatParameter("verticalFrames",   1  )
+                object:SetFloatParameter("numFrames",        1   )
             else
                 local emotemenuiconDetails = GetEmoteTextureDetails(self.spaces -2 ) -- expects value between 0-29
                 object:SetTexture(emotemenufull)
