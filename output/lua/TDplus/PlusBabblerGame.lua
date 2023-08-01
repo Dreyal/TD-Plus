@@ -81,7 +81,7 @@ function PlusBabblerGame:OnPressed()
             self:BabblerChat( "Time: " .. string.sub(tostring(endtime-starttime), 1, 5) .. " New Best!" .. "                                ", endtime-starttime)
             highscore = endtime-starttime
         else -- kein highscore
-            self:BabblerChat( "Time: " .. string.sub(tostring(endtime-starttime), 1, 5) .. "                                ", endtime-starttime)
+            self:BabblerChat( "Time: " .. string.sub(tostring(endtime-starttime), 1, 5) , false)
         end
 
         if endtime - starttime < 5.5 then

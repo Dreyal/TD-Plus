@@ -124,7 +124,7 @@ function GMTDPlayerPlaqueContextMenu:Initialize(params, errorDepth)
     self:HookEvent(self.gameendstats, "OnPressed",
     function()
         if loadedgameendstats == false then
-          Script.Load("lua/TDplus/Build_343/PlusGUIGameEndStats.lua") -- has to be loaded late
+          Script.Load("lua/TDplus/PlusGUIGameEndStats.lua") -- has to be loaded late
           EndgameStatsTD = GetGUIManager():CreateGUIScript("PlusGUIGameEndStats")
           loadedgameendstats = true
           EndgameStatsTD:SetIsVisible(true)

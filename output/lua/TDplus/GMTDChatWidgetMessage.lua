@@ -3,7 +3,7 @@
 
 Script.Load("lua/GUI/layouts/GUIListLayout.lua")
 
-Script.Load("lua/TDplus/Build_343/PlusGif.lua")
+Script.Load("lua/TDplus/PlusGif.lua")
 Script.Load("lua/menu2/widgets/Thunderdome/GMTDLoadingGraphic.lua")
 
 local kMessageTextFontFamily = "Arial"

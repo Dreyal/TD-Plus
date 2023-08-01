@@ -1,5 +1,5 @@
 
-Script.Load("lua/TDplus/Build_343/PlusEmoteButton.lua")
+Script.Load("lua/TDplus/PlusEmoteButton.lua")
 
 emotemenufull = PrecacheAsset("ui/emotemenufull.dds")
 local noEmote = PrecacheAsset("ui/emptyonebyone.dds")

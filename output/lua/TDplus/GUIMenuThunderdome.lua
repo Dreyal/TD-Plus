@@ -2,6 +2,10 @@
 -- leaver at the mapvote stage force us to re-apply it
 local HoursInLifefromData = false 
 
+
+
+
+
 local oldGUIMenuThunderdomeInitialize = GUIMenuThunderdome.Initialize
 function GUIMenuThunderdome:Initialize(params, errorDepth)
 
@@ -38,7 +42,7 @@ function GUIMenuThunderdome:Initialize(params, errorDepth)
     self.TD_UpdateStatusBars = function( clientObject, memberId, lobbyId )
         oldTD_UpdateStatusBars(clientObject, memberId, lobbyId)
 
-        hideBars()
+        hideBars() -- why?
         if not self.hoursCallback and not HoursInLifefromData and not Thunderdome():GetIsGroupId(lobbyId) then 
             self.hoursCallback = self:AddTimedCallback( self.writeHoursInLifeforms, 2)
         end
@@ -79,6 +83,10 @@ function GUIMenuThunderdome:Initialize(params, errorDepth)
             self.searchAfterAfkCallback = self:AddTimedCallback(self.ShowSearchScreen, ran)
         end
     end
+
+    
+    
+
 
     
     local oldTD_OnLobbyLeft = self.TD_OnLobbyLeft
@@ -172,9 +180,14 @@ function GUIMenuThunderdome:UpdateStatusBars( lobbyId )
     if TDseedingMode then 
         local members = Thunderdome():GetMemberListLocalData( lobbyId )
         if not members then return end
-        if #members == 10 or #members == 11 then 
+        if #members == 2 or #members == 11 then  -- TODO change to 10 again
             local td = Thunderdome()
+
+
+            --leaving the lobby like this causes an error at displaying the statusbar at ThunderdomeExports.lua:198 (lobby = nil)
             td:LeaveLobby(td:GetActiveLobbyId(), true)
+
+
             Shared.Message("Left lobby at 10 players due to seeding mode enabled.")
             TDseedingMode = false
             Shared.Message("Autoleave at 10 Player: " .. tostring(TDseedingMode))

@@ -14,15 +14,14 @@ This mod adds some QoL changes for matchmaking lobbies
 - displays the average hiveskill of both teams at the mapvote
 - displays the top 3 voted map in the planning menu
 - messages of muted users will be added back when unmuted
-- adds a button to show an example marine tech path 
+- adds a button to show an example marine tech path
 
 use the command "help" in the console to find some other useful commands
 
 
 Please share feedback and suggestions. They motivate me to continue working on this mod :)
 
-If youre looking for others to play Matchmaking check out our Discord at https://discord.gg/Ttb4y5QE
-]=]
+If youre looking for others to play Matchmaking check out our Discord at https://discord.gg/Ttb4y5QE]=]
 image       = "preview.jpg"
 tag_modtype = "Look and Feel"
 tag_support = "Passes Default Consistency"

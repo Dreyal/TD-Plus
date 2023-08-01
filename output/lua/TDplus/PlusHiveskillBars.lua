@@ -80,7 +80,7 @@ function PlusHiveskillBars:Initialize(params, errorDepth)
   end
 
 
-function PlusHiveskillBars:calcTeamskillgraph()
+function PlusHiveskillBars:calcTeamskillgraph(debug)
     local memberModel = Thunderdome():GetMemberListLocalData(Thunderdome():GetActiveLobbyId())
     if not memberModel then return end
 
@@ -114,7 +114,19 @@ function PlusHiveskillBars:calcTeamskillgraph()
     end
 
     if team1count + team2count ~= 12 or team3count + team4count ~= 12 then
+
         self:SetVisible(false)
+
+        for j = 1, #memberModel do
+            local name = memberModel[j].name
+            Log("player #%d %s", j, name)
+        end
+
+        
+        if debug == true then 
+            self:SetVisible(true)
+        end
+
         Shared.Message("Missing data for 1+ player at hiveskillbars")
         return
     end

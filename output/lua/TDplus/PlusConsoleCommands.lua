@@ -79,6 +79,15 @@ function PlusCreateLobby()
 end
 Event.Hook("Console_newlobby", PlusCreateLobby)
 
+function PlusSearchLobby()
+    if Thunderdome():GetIsSearching() then
+        Log("Already searching")
+    end
+    Thunderdome():InitSearchMode()
+end
+Event.Hook("Console_searchlobby", PlusSearchLobby)
+
+
 
 function PlusCreateChat(...)
       local chatMessage = StringConcatArgs(...)

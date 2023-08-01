@@ -1,8 +1,8 @@
 
 
-Script.Load("lua/TDplus/Build_343/PlusBabblerGame.lua")
-Script.Load("lua/TDplus/Build_343/PlusHiveskillBars.lua")
-Script.Load("lua/TDplus/Build_343/PlusMarineGuide.lua")
+Script.Load("lua/TDplus/PlusBabblerGame.lua")
+Script.Load("lua/TDplus/PlusHiveskillBars.lua")
+Script.Load("lua/TDplus/PlusMarineGuide.lua")
 
 
 local oldGMTDLobbyScreenInitialize = GMTDLobbyScreen.Initialize
@@ -51,20 +51,31 @@ function GMTDLobbyScreen:Initialize(params, errorDepth)
     self.marineguidebutton:AlignTopLeft()
     self.marineguidebutton:SetPosition(2130, 30 - 15 )
     self.marineguidebutton:SetLayer(2002)
-    self.marineguidebutton:SetVisible(true)
+    self.marineguidebutton:SetVisible(false) -- removed for now
 
 
     function hideBars()
+        Shared.Message("called hidebars")
       self.bars:SetVisible(false)
     end
 
     function showBars()
-      self.bars:calcTeamskillgraph()
+      self.bars:calcTeamskillgraph(false)
     end
 
     self.printmapvotes = function()
         self:calcMapvotes()
     end
+
+        
+    function DebugBars()
+        Shared.Message("debug bars")
+        self.bars:calcTeamskillgraph(true)
+    end
+    Event.Hook("Console_debugbars", DebugBars)
+
+
+
 end
 
 

@@ -1,6 +1,6 @@
 
     modEntry =
     {
-        FileHooks = "lua/TDplus/Build_343/Filehook.lua",
+        FileHooks = "lua/TDplus/Filehook.lua",
         Priority = 100,
     }

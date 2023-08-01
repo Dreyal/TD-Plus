@@ -31,7 +31,7 @@ function GMTDPlanningScreen:Initialize(params, errorDepth)
     self.marineguidebutton:AlignTopLeft()
     self.marineguidebutton:SetPosition(2130, 30 - 15 )
     self.marineguidebutton:SetLayer(2002)
-    self.marineguidebutton:SetVisible(true)
+    self.marineguidebutton:SetVisible(false) -- removed for now
 
 
 end
